@@ -1,0 +1,76 @@
+name: Feature request
+description: Propose an improvement to the console, its host-side documentation or its developer workflow.
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature requests are welcome when they improve the **console, its documentation or its developer
+        workflow**.
+
+        Not accepted, and closed without discussion:
+
+        - requests to add a **content source, a site plugin or a content policy** — this repository contains
+          none by design, and does not accept them in code, fixtures, docs or issues;
+        - requests whose purpose is to make the console fetch, bundle, proxy or render content for adult or
+          pirate sites;
+        - support for a specific third-party plugin's behaviour on a specific site;
+        - changes to the runtime, the card DSL or the `$lib` contract — those belong to
+          [`kongtong9527/lingshu-runtime`](https://github.com/kongtong9527/lingshu-runtime).
+
+        See [CONTRIBUTING.md §2](https://github.com/kongtong9527/lingshu-devconsole/blob/main/CONTRIBUTING.md#2-scope-what-this-repository-contains)
+        for the full scope. Keep the request neutral about content: no site names, domains or real content.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: This request is about the console/docs, not about adding content sources or site plugins.
+          required: true
+        - label: I searched existing issues, the README and docs/ for this.
+          required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Run bar / action and parameter UI
+        - JSON or preview panes
+        - Card-DSL preview rendering
+        - Request tracing / run log
+        - Image or media proxy, HLS playback diagnostics
+        - Desktop browser channel
+        - Build, type check or test tooling
+        - Host-side documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do while debugging a plugin, and what gets in the way today? Describe the problem before the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should happen instead? If it changes how a result is rendered, remember the preview must stay isomorphic to the runtime and the device.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you tried, or other designs you weighed.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that helps — keep it free of site-specific details and personal data.
+    validations:
+      required: false

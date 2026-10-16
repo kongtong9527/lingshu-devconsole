@@ -1,0 +1,347 @@
+/*
+ * 灵枢 DevConsole 设计 Token
+ * 风格：暗色 DevTools（VS Code / Chrome DevTools / Linear）
+ * 字体：IBM Plex Sans（UI）+ JetBrains Mono（代码 / URL / JSON）
+ * 密度：高（8px 基础单位，紧凑型开发者工具）
+ * 依据：ui-ux-pro-max —— Developer Tool / Internal Dashboard
+ */
+
+:root {
+  /* ── 字体族 ─────────────────────────────────────────── */
+  --dc-font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --dc-font-mono: 'JetBrains Mono', 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* ── 字号（紧凑型 DevTools 刻度）──────────────────── */
+  --dc-font-size-xs: 10px;   /* 角标 / 微标签 */
+  --dc-font-size-sm: 11px;   /* 次要文本 / 标签 */
+  --dc-font-size-md: 12px;   /* 正文（DevTools 基准）*/
+  --dc-font-size-lg: 13px;   /* 强调正文 */
+  --dc-font-size-xl: 14px;   /* 小标题 */
+  --dc-font-size-2xl: 16px;  /* 区域标题 */
+  --dc-font-size-3xl: 20px;  /* 页面标题 */
+
+  /* 字重 */
+  --dc-font-weight-regular: 400;
+  --dc-font-weight-medium: 500;
+  --dc-font-weight-semibold: 600;
+  --dc-font-weight-bold: 700;
+
+  /* 行高 */
+  --dc-line-height-tight: 1.25;
+  --dc-line-height-normal: 1.5;
+  --dc-line-height-relaxed: 1.7;
+
+  /* 字间距 */
+  --dc-tracking-wide: 0.04em;
+  --dc-tracking-wider: 0.08em;
+
+  /* ── 间距（8px 基础单位，高密度）──────────────────── */
+  --dc-space-0: 0;
+  --dc-space-1: 2px;
+  --dc-space-2: 4px;
+  --dc-space-3: 6px;
+  --dc-space-4: 8px;
+  --dc-space-5: 12px;
+  --dc-space-6: 16px;
+  --dc-space-7: 20px;
+  --dc-space-8: 24px;
+  --dc-space-9: 32px;
+  --dc-space-10: 40px;
+
+  /* ── 圆角（克制）──────────────────────────────────── */
+  --dc-radius-sm: 4px;
+  --dc-radius-md: 6px;
+  --dc-radius-lg: 8px;
+  --dc-radius-pill: 999px;
+
+  /* ── 暗色框架配色（Slate 系）──────────────────────── */
+  /* 背景层级：由深到浅，表达 elevation */
+  --dc-color-bg-base: #0b1220;        /* 最底层（app 背景）*/
+  --dc-color-bg-surface: #0f172a;     /* header / 面板 */
+  --dc-color-bg-raised: #1e293b;      /* 卡片 / 输入框 / 提升层 */
+  --dc-color-bg-hover: #243348;       /* hover 态 */
+  --dc-color-bg-active: #2c3e54;      /* active / 选中态 */
+  --dc-color-bg-overlay: #334155;     /* 浮层 */
+
+  /* 前景文本（在暗色背景上）*/
+  --dc-color-text-primary: #f1f5f9;   /* 主要文本 (slate-100, 对比 ~14:1) */
+  --dc-color-text-secondary: #94a3b8; /* 次要文本 (slate-400, 对比 ~6.4:1 ✓) */
+  --dc-color-text-muted: #64748b;     /* 占位 / 禁用 (slate-500, 对比 ~4.3:1) */
+  --dc-color-text-on-primary: #ffffff;
+
+  /* 边框 */
+  --dc-color-border: #1e293b;         /* 默认分隔线 */
+  --dc-color-border-strong: #334155;  /* 强调分隔线 / 输入框 */
+  --dc-color-border-focus: #3b82f6;   /* 聚焦边框 */
+
+  /* 语义色 */
+  --dc-color-primary: #3b82f6;        /* 主色 (blue-500) */
+  --dc-color-primary-hover: #2563eb;  /* 主色 hover (blue-600) */
+  --dc-color-primary-active: #1d4ed8; /* 主色 active (blue-700) */
+  --dc-color-primary-soft: rgba(59, 130, 246, 0.14); /* 主色淡背景（选中态）*/
+  --dc-color-primary-soft-text: #60a5fa;
+
+  --dc-color-success: #22c55e;        /* 成功 (green-500) */
+  --dc-color-success-soft: rgba(34, 197, 94, 0.14);
+  --dc-color-success-text: #4ade80;
+
+  --dc-color-warning: #f59e0b;        /* 警告 (amber-500) */
+  --dc-color-warning-soft: rgba(245, 158, 11, 0.16);
+  --dc-color-warning-text: #fbbf24;
+
+  --dc-color-danger: #ef4444;         /* 危险 / 错误 (red-500) */
+  --dc-color-danger-hover: #dc2626;
+  --dc-color-danger-soft: rgba(239, 68, 68, 0.14);
+  --dc-color-danger-text: #f87171;
+
+  --dc-color-info: #38bdf8;           /* 信息 (sky-400) */
+  --dc-color-purple: #a78bfa;         /* 标签 / tags */
+  --dc-color-cyan: #22d3ee;           /* 章节 */
+
+  /* ── HTTP 方法色（RequestList 专用）───────────────── */
+  --dc-color-method-get: #38bdf8;
+  --dc-color-method-post: #fb923c;
+
+  /* 状态码色阶 */
+  --dc-color-status-ok: #4ade80;        /* 2xx */
+  --dc-color-status-redirect: #38bdf8;  /* 3xx */
+  --dc-color-status-client-error: #fbbf24; /* 4xx */
+  --dc-color-status-server-error: #f87171; /* 5xx */
+  --dc-color-status-fail: #94a3b8;      /* 0 / 失败 */
+
+  /* 错误状态色 */
+  --dc-color-error-light: #fecaca;
+  --dc-color-error-lighter: #fee2e2;
+  --dc-color-error-text-light: #fca5a5;
+  --dc-color-error-border: rgba(239, 68, 68, 0.3);
+  --dc-color-error-stack-bg: rgba(0, 0, 0, 0.3);
+  --dc-color-btn-danger-hover-bg: rgba(239, 68, 68, 0.22);
+  --dc-color-input-focus-shadow: rgba(59, 130, 246, 0.18);
+  --dc-color-spinner-border: rgba(255, 255, 255, 0.4);
+
+  /* ── BlockRenderer 内容块角标色（语义映射）────────── */
+  --dc-color-block-heading: #818cf8;
+  --dc-color-block-text: #34d399;
+  --dc-color-block-image: #fbbf24;
+  --dc-color-block-video: #f87171;
+  --dc-color-block-episodes: #f87171;
+  --dc-color-block-gallery: #f472b6;
+  --dc-color-block-link: #60a5fa;
+  --dc-color-block-chapter: #22d3ee;
+  --dc-color-block-tags: #a78bfa;
+  --dc-color-block-recommendations: #fb923c;
+  --dc-color-block-divider: #94a3b8;
+  --dc-color-block-default: #94a3b8;
+
+  /* ── 阴影 / elevation ──────────────────────────────── */
+  --dc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --dc-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --dc-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --dc-shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.35);
+
+  /* ── 动效 ──────────────────────────────────────────── */
+  --dc-duration-fast: 120ms;
+  --dc-duration-base: 180ms;
+  --dc-duration-slow: 280ms;
+  --dc-ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* 进入：减速（Linear / HIG）*/
+  --dc-ease-in: cubic-bezier(0.7, 0, 0.84, 0);    /* 退出：加速 */
+  --dc-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── z-index 层级 ──────────────────────────────────── */
+  --dc-z-base: 0;
+  --dc-z-sticky: 10;
+  --dc-z-header: 20;
+  --dc-z-overlay: 40;
+  --dc-z-modal: 100;
+  --dc-z-toast: 1000;
+
+  /* ── 布局尺寸 ──────────────────────────────────────── */
+  --dc-sidebar-width: 240px;
+  --dc-header-height: 44px;
+  --dc-toolbar-min-height: 48px;
+}
+
+/*
+ * 预览视口：默认深色背景，模拟真实内容展示（文章 / 漫画 / 阅读页）
+ * 预览组件统一使用 --pv-* 变量，与框架的 --dc-* 体系隔离
+ */
+.dc-preview-viewport {
+  --pv-color-bg: #0f172a;
+  --pv-color-surface: #1e293b;
+  --pv-color-surface-alt: #334155;
+  --pv-color-text-primary: #f1f5f9;
+  --pv-color-text-secondary: #94a3b8;
+  --pv-color-text-muted: #64748b;
+  --pv-color-border: #334155;
+  --pv-color-border-soft: #1e293b;
+  --pv-color-primary: #3b82f6;
+  --pv-color-primary-text: #60a5fa;
+  --pv-color-primary-soft: rgba(59, 130, 246, 0.14);
+  --pv-color-image-placeholder: #1e293b;
+  --pv-color-image-shimmer: #334155;
+  --pv-radius-card: 10px;
+  --pv-radius-inner: 6px;
+  --pv-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --pv-shadow-card-hover: 0 6px 16px rgba(0, 0, 0, 0.4);
+  --pv-color-link: #22d3ee;
+  --pv-color-link-hover: #67e8f9;
+  --pv-color-tag: #a78bfa;
+  --pv-color-recommendation: #fb923c;
+  --pv-color-error: #fca5a5;
+  --pv-color-category-multi: #c4b5fd;
+  --pv-color-category-multi-bg: rgba(139, 92, 246, 0.2);
+}
+
+/* ── 全局重置 ────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--dc-font-sans);
+  font-size: var(--dc-font-size-md);
+  color: var(--dc-color-text-primary);
+  background: var(--dc-color-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 可见焦点环（键盘可达性，CRITICAL）*/
+:focus-visible {
+  outline: 2px solid var(--dc-color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--dc-radius-sm);
+}
+
+/* 尊重 prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 自定义滚动条（DevTools 风格）*/
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--dc-color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--dc-color-border-strong);
+  border-radius: var(--dc-radius-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--dc-color-text-muted);
+  background-clip: content-box;
+}
+
+/* ── 浅色主题 ────────────────────────────────────────── */
+[data-theme="light"] {
+  /* 背景层级 */
+  --dc-color-bg-base: #f8fafc;
+  --dc-color-bg-surface: #ffffff;
+  --dc-color-bg-raised: #f1f5f9;
+  --dc-color-bg-hover: #e2e8f0;
+  --dc-color-bg-active: #cbd5e1;
+  --dc-color-bg-overlay: #e2e8f0;
+
+  /* 前景文本 */
+  --dc-color-text-primary: #0f172a;
+  --dc-color-text-secondary: #475569;
+  --dc-color-text-muted: #94a3b8;
+  --dc-color-text-on-primary: #ffffff;
+
+  /* 边框 */
+  --dc-color-border: #e2e8f0;
+  --dc-color-border-strong: #cbd5e1;
+  --dc-color-border-focus: #3b82f6;
+
+  /* 语义色 */
+  --dc-color-primary: #3b82f6;
+  --dc-color-primary-hover: #2563eb;
+  --dc-color-primary-active: #1d4ed8;
+  --dc-color-primary-soft: rgba(59, 130, 246, 0.1);
+  --dc-color-primary-soft-text: #1d4ed8;
+
+  --dc-color-success: #22c55e;
+  --dc-color-success-soft: rgba(34, 197, 94, 0.1);
+  --dc-color-success-text: #16a34a;
+
+  --dc-color-warning: #f59e0b;
+  --dc-color-warning-soft: rgba(245, 158, 11, 0.1);
+  --dc-color-warning-text: #d97706;
+
+  --dc-color-danger: #ef4444;
+  --dc-color-danger-hover: #dc2626;
+  --dc-color-danger-soft: rgba(239, 68, 68, 0.1);
+  --dc-color-danger-text: #dc2626;
+
+  /* 错误状态色 */
+  --dc-color-error-light: #dc2626;
+  --dc-color-error-lighter: #b91c1c;
+  --dc-color-error-text-light: #991b1b;
+  --dc-color-error-border: rgba(239, 68, 68, 0.5);
+  --dc-color-error-stack-bg: rgba(0, 0, 0, 0.05);
+  --dc-color-btn-danger-hover-bg: rgba(239, 68, 68, 0.22);
+  --dc-color-input-focus-shadow: rgba(59, 130, 246, 0.18);
+  --dc-color-spinner-border: rgba(255, 255, 255, 0.4);
+
+  --dc-color-info: #0ea5e9;
+  --dc-color-purple: #8b5cf6;
+  --dc-color-cyan: #06b6d4;
+
+  /* 阴影 / elevation */
+  --dc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dc-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --dc-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --dc-shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.2);
+
+  /* 预览视口浅色主题 */
+  .dc-preview-viewport {
+    --pv-color-bg: #f8fafc;
+    --pv-color-surface: #ffffff;
+    --pv-color-surface-alt: #f1f5f9;
+    --pv-color-text-primary: #0f172a;
+    --pv-color-text-secondary: #475569;
+    --pv-color-text-muted: #94a3b8;
+    --pv-color-border: #e2e8f0;
+    --pv-color-border-soft: #f1f5f9;
+    --pv-color-primary: #3b82f6;
+    --pv-color-primary-text: #1d4ed8;
+    --pv-color-primary-soft: #eff6ff;
+    --pv-color-image-placeholder: #f1f5f9;
+    --pv-color-image-shimmer: #e2e8f0;
+    --pv-shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --pv-shadow-card-hover: 0 6px 16px rgba(15, 23, 42, 0.12);
+    --pv-color-link: #0891b2;
+    --pv-color-link-hover: #06b6d4;
+    --pv-color-tag: #7c3aed;
+    --pv-color-recommendation: #ea580c;
+    --pv-color-error: #b91c1c;
+    --pv-color-category-multi: #5b21b6;
+    --pv-color-category-multi-bg: #ddd6fe;
+  }
+}

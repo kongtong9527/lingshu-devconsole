@@ -1,0 +1,14 @@
+# 依赖与生成物
+node_modules/
+dist/
+server/dist/
+*.tsbuildinfo
+
+# 插件目录：公开仓默认在仓根放一个 plugins/（可用 --plugins-dir / LINGSHU_PLUGINS_DIR 指向别处）
+plugins/
+
+# 编辑器与系统
+.DS_Store
+.idea/
+.vscode/
+*.swp

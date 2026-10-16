@@ -1,0 +1,87 @@
+name: Bug report
+description: Report a defect in the console — front-end, BFF, request tracing, preview or proxy paths.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        Please keep the report **neutral about content**: this repository contains no content sources and no
+        site implementations, so do not name sites, paste domains or quote real content. Describe the plugin
+        generically ("the plugin", "the site") and reproduce with a minimal synthetic plugin plus a local
+        fixture where possible.
+
+        Security issues must **not** be filed here — see
+        [SECURITY.md](https://github.com/kongtong9527/lingshu-devconsole/blob/main/SECURITY.md).
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: I read the README, CONTRIBUTING.md (this repository is a published snapshot and CI is injected from upstream) and SECURITY.md.
+          required: true
+        - label: This is a defect in the console, not a complaint about what a third-party plugin does on a particular site.
+          required: true
+        - label: I have not pasted any site name, domain, plugin id from a content source, or real user data.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Snapshot / version
+      description: The `lingshu-devconsole` version or commit you are running (the README footer shows the snapshot date and version).
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      description: Output of `node -v`.
+      placeholder: v20.11.0
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Front-end (run bar, JSON / preview panes, navigation, account panel)
+        - Card-DSL preview rendering
+        - BFF plugin discovery or run endpoint
+        - Request tracing / run log
+        - Image or media proxy (decryption, ranges, HLS)
+        - Desktop browser channel
+        - Build, type check or tests
+        - Documentation
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: |
+        What you observed and what you expected instead. If a plugin was involved, say which action
+        (list / detail / reading / play / …) — not which site.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: |
+        Exact steps or commands, then the request log / console output. Redact anything site-specific or
+        personal: plugin paths can be placeholders, URLs can be `https://example.com/…`.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output
+      description: BFF log, browser console output, or the JSON error the console displayed.
+      render: shell
+    validations:
+      required: false

@@ -1,0 +1,67 @@
+# CI for the published dev-console snapshot.
+#
+# This file is injected from the upstream template on every release. Do not edit it in this repository —
+# local edits are overwritten and cannot be reviewed (see CONTRIBUTING.md §1); propose workflow changes
+# upstream through an issue or a pull-request description instead.
+#
+# Layout note: here the dev console *is* the repository root (`src/`, `server/src/`, `docs/`), so the
+# monorepo's `npm run -w devconsole <script>` calls become plain `npm run <script>`, and the contract types
+# come from the installed `@lingshu/runtime` package instead of a sibling checkout.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Type check · build · tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20 # Node >= 18.17 is required (sharp 0.33 / Vite 5); CI pins the current LTS
+          cache: npm
+
+      # `npm ci` needs the lockfile that ships with the snapshot; the fallback keeps CI usable from a
+      # checkout that has none (a fork that dropped it, for example).
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      # `npm run build` = type check (front-end + BFF) → compile the BFF → bundle the web app.
+      # It resolves the card-DSL/contract types from the installed `@lingshu/runtime` package. There is
+      # no sibling `../runtime` in this repository, so the snapshot's `package.json` must not keep the
+      # upstream monorepo's `build:runtime` step (which builds a sibling checkout) in `typecheck`/`build`.
+      - name: Type check and build
+        run: npm run build
+
+      # This repository ships no plugin corpus, so the corpus-dependent test groups skip themselves.
+      # LINGSHU_REQUIRE_PLUGIN_CORPUS is deliberately NOT set: it means "the corpus must be present" and
+      # belongs to the upstream development repository. Setting it here would fail CI by design.
+      - name: Plugin corpus probe
+        run: |
+          if [ -d plugins ] || [ -n "${LINGSHU_PLUGINS_DIR:-}" ]; then
+            echo "plugin corpus found — corpus-dependent tests will run"
+          else
+            echo "no plugin corpus in this snapshot — corpus-dependent tests skip themselves (by design)"
+          fi
+
+      - name: Tests (vitest)
+        run: npm test

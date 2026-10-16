@@ -1,0 +1,25 @@
+# Issue chooser configuration.
+# Injected from the upstream template on every release — do not edit it in this repository.
+
+blank_issues_enabled: true
+
+contact_links:
+  - name: Security report (private)
+    url: https://github.com/kongtong9527/lingshu-devconsole/security/advisories/new
+    about: Do not report security issues in a public issue. The threat model (the sandbox is not a security boundary) and the reporting process are in SECURITY.md.
+
+  - name: Content sources and site plugins are out of scope
+    url: https://github.com/kongtong9527/lingshu-devconsole/blob/main/CONTRIBUTING.md#2-scope-what-this-repository-contains
+    about: This repository contains no content sources, no site implementations and no content policy. It bundles no plugin and no fixture data. Requests to add a site plugin, a site list or content for adult/pirate sites are not accepted — in code, fixtures, docs or issues. Such requests are closed without discussion.
+
+  - name: Pointing the console at a plugin directory
+    url: https://github.com/kongtong9527/lingshu-devconsole/blob/main/README.md#pointing-the-console-at-a-plugin-directory
+    about: 'The console bundles nothing — pass --plugins-dir, set LINGSHU_PLUGINS_DIR, or put plugins in <cwd>/plugins. Plugin authoring itself lives in the runtime repository''s skill package.'
+
+  - name: Runtime, card DSL and $lib questions
+    url: https://github.com/kongtong9527/lingshu-runtime/issues
+    about: The sandbox, the CLI, the card-DSL schema and the $lib contract live in the runtime repository — please ask there.
+
+  - name: This repository is a published snapshot
+    url: https://github.com/kongtong9527/lingshu-devconsole/blob/main/CONTRIBUTING.md
+    about: Releases replace the tracked tree with an upstream snapshot; CI files are injected from upstream templates and must not be edited here; pull requests have to be carried upstream to take effect.
