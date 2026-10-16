@@ -54,6 +54,17 @@ npm run build
 LINGSHU_PLUGINS_DIR=/path/to/plugins npm run dev
 ```
 
+> **跨仓依赖（`@lingshu/runtime`）**：在它发上 npm 之前以 git 依赖消费。npm 解析 GitHub 的 git 依赖时
+> 会走 **ssh**（`ssh://git@github.com/…`），没有配 GitHub SSH key 的机器会直接失败。若 `npm ci` 报
+> `Permission denied (publickey)`，做一次 https 映射即可：
+>
+> ```bash
+> git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+> ```
+>
+> `kongtong9527/lingshu-runtime` 还是私有仓时另需凭据（PAT 或 SSH key）；它转公开之后上面这条映射就够了。
+
+
 `npm run dev` 同时起两个进程：
 
 - Vite 开发服务器 <http://localhost:5180>——浏览器打开的是它。

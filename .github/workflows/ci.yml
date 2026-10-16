@@ -35,19 +35,23 @@ jobs:
           node-version: 20 # Node >= 18.17 is required (sharp 0.33 / Vite 5); CI pins the current LTS
           cache: npm
 
-      # 依赖里含跨仓 git 依赖 `@lingshu/runtime`。
-      #   · 公开阶段：匿名 https 就能克隆，本作业**不需要任何凭据**。
-      #   · 私有阶段：GitHub 的 `GITHUB_TOKEN` 只对**本仓**有效，跨私有仓克隆需要 PAT——
-      #     在 Settings → Secrets and variables → Actions 里加 `LINGSHU_RUNTIME_TOKEN`（对
-      #     `kongtong9527/lingshu-runtime` 有 repo 读权限）即可，下面的步骤会自动改用它。
-      - name: Cross-repo git credentials (private phase only)
+      # 依赖里含跨仓 git 依赖 `@lingshu/runtime`。npm 在解析 GitHub 的 git 依赖时会写成
+      # `ssh://git@github.com/…`，而 runner 没有 SSH key —— 所以这里**无条件**把 ssh 形态改写回
+      # https；私有阶段再把 PAT 拼进 https（公开阶段匿名 https 直接可用，无需任何凭据）。
+      # 私有阶段需要：Settings → Secrets and variables → Actions 里加 `LINGSHU_RUNTIME_TOKEN`
+      # （对 `kongtong9527/lingshu-runtime` 有 repo 读权限的 PAT）。
+      - name: Cross-repo git credentials
         run: |
           if [ -n "${{ secrets.LINGSHU_RUNTIME_TOKEN }}" ]; then
-            git config --global url."https://x-access-token:${{ secrets.LINGSHU_RUNTIME_TOKEN }}@github.com/".insteadOf "https://github.com/"
+            BASE="https://x-access-token:${{ secrets.LINGSHU_RUNTIME_TOKEN }}@github.com/"
             echo "using LINGSHU_RUNTIME_TOKEN for the cross-repo git dependency"
           else
-            echo "LINGSHU_RUNTIME_TOKEN not set: if kongtong9527/lingshu-devconsole/../lingshu-runtime is still private, the install below will fail with an auth error — it works anonymously once that repository is public."
+            BASE="https://github.com/"
+            echo "LINGSHU_RUNTIME_TOKEN not set — the cross-repo dependency resolves anonymously (works once kongtong9527/lingshu-runtime is public)"
           fi
+          git config --global url."$BASE".insteadOf "ssh://git@github.com/"
+          git config --global url."$BASE".insteadOf "git@github.com:"
+          git config --global url."$BASE".insteadOf "https://github.com/"
 
       # `npm ci` needs the lockfile that ships with the snapshot; the fallback keeps CI usable from a
       # checkout that has none (a fork that dropped it, for example).

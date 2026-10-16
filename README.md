@@ -62,6 +62,19 @@ npm run build
 LINGSHU_PLUGINS_DIR=/path/to/plugins npm run dev
 ```
 
+> **Cross-repo dependency (`@lingshu/runtime`)**: it is consumed as a git dependency until the
+> package is published to npm. npm resolves GitHub git dependencies over **ssh** (`ssh://git@github.com/…`),
+> which fails on machines without a GitHub SSH key. If `npm ci` stops with
+> `Permission denied (publickey)`, map it back to https once:
+>
+> ```bash
+> git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+> ```
+>
+> While `kongtong9527/lingshu-runtime` is still private you also need credentials for it (a PAT in the URL
+> or an SSH key); once it is public the https mapping above is all you need.
+
+
 `npm run dev` starts both processes:
 
 - Vite dev server on <http://localhost:5180> — this is what you open in the browser.
