@@ -49,9 +49,12 @@ jobs:
             BASE="https://github.com/"
             echo "LINGSHU_RUNTIME_TOKEN not set — the cross-repo dependency resolves anonymously (works once kongtong9527/lingshu-runtime is public)"
           fi
-          git config --global url."$BASE".insteadOf "ssh://git@github.com/"
-          git config --global url."$BASE".insteadOf "git@github.com:"
-          git config --global url."$BASE".insteadOf "https://github.com/"
+          # 注意必须用 --add：`git config key value` 会把同名键的**所有**旧值替换掉，
+          # 三条规则会被压成一条（实测：只剩最后一条 → ssh 又生效了）。
+          git config --global --add url."$BASE".insteadOf "ssh://git@github.com/"
+          git config --global --add url."$BASE".insteadOf "git@github.com:"
+          git config --global --add url."$BASE".insteadOf "https://github.com/"
+          git config --global --get-regexp insteadOf
 
       # `npm ci` needs the lockfile that ships with the snapshot; the fallback keeps CI usable from a
       # checkout that has none (a fork that dropped it, for example).
