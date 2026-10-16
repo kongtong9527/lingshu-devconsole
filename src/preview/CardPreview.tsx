@@ -1,4 +1,10 @@
-import { shouldFallbackCard as runtimeShouldFallbackCard } from '@lingshu/runtime'
+// **必须走 `@lingshu/runtime/card-dsl` 子路径**（浏览器安全出口），别从包根 import：
+// 包根 `dist/lib.js` 是**Node 宿主**入口，会带进 `runtime/storage.js` 等 Node-only 模块
+// （`node:fs`/`node:url`），vite 的生产构建会因此报
+// `"fileURLToPath" is not exported by "__vite-browser-external"` 而整包构建失败
+// （2026-10 实测：母仓 CI 只跑 typecheck+test，`vite build` 的这条从没被覆盖，直到公开仓 CI 跑 `npm run build`）。
+// 类型 import 无所谓（编译期擦除），值 import 一律走子路径。
+import { shouldFallbackCard as runtimeShouldFallbackCard } from '@lingshu/runtime/card-dsl'
 import type { CardDSL } from '@lingshu/runtime'
 import type { ImageTransport, ListItem } from '../types.js'
 import { proxyUrl } from '../api/proxy.js'
