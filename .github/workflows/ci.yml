@@ -35,6 +35,20 @@ jobs:
           node-version: 20 # Node >= 18.17 is required (sharp 0.33 / Vite 5); CI pins the current LTS
           cache: npm
 
+      # 依赖里含跨仓 git 依赖 `@lingshu/runtime`。
+      #   · 公开阶段：匿名 https 就能克隆，本作业**不需要任何凭据**。
+      #   · 私有阶段：GitHub 的 `GITHUB_TOKEN` 只对**本仓**有效，跨私有仓克隆需要 PAT——
+      #     在 Settings → Secrets and variables → Actions 里加 `LINGSHU_RUNTIME_TOKEN`（对
+      #     `kongtong9527/lingshu-runtime` 有 repo 读权限）即可，下面的步骤会自动改用它。
+      - name: Cross-repo git credentials (private phase only)
+        run: |
+          if [ -n "${{ secrets.LINGSHU_RUNTIME_TOKEN }}" ]; then
+            git config --global url."https://x-access-token:${{ secrets.LINGSHU_RUNTIME_TOKEN }}@github.com/".insteadOf "https://github.com/"
+            echo "using LINGSHU_RUNTIME_TOKEN for the cross-repo git dependency"
+          else
+            echo "LINGSHU_RUNTIME_TOKEN not set: if kongtong9527/lingshu-devconsole/../lingshu-runtime is still private, the install below will fail with an auth error — it works anonymously once that repository is public."
+          fi
+
       # `npm ci` needs the lockfile that ships with the snapshot; the fallback keeps CI usable from a
       # checkout that has none (a fork that dropped it, for example).
       - name: Install dependencies
