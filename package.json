@@ -1,6 +1,6 @@
 {
   "name": "@lingshu/devconsole",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@lingshu/runtime": "git+https://github.com/kongtong9527/lingshu-runtime.git#v0.1.0",
+    "@lingshu/runtime": "git+https://github.com/kongtong9527/lingshu-runtime.git#v0.1.3",
     "fastify": "^4.27.0",
     "hls.js": "^1.6.16",
     "playwright-core": "^1.63.0",

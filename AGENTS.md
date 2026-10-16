@@ -24,7 +24,7 @@ DevConsole 是灵枢的可视化调试台（React + Fastify）。本文件是 **
 
 ### 构建与类型检查（详见 `docs/build-and-typecheck.md`）
 
-- **类型检查不在 `test` 里（勿只看测试全绿）**：`vite`/`vitest` 都走 esbuild、不做类型检查；新增 `Capabilities`/`Selected` 等必填字段漏了照样跑绿（2026-10：40 条基线错误静默存在）。`npm run -w devconsole typecheck` 会**先构建 runtime**（契约类型来自 `@lingshu/runtime` 的 `dist`，见 [`runtime/docs/program-api.md`](../runtime/docs/program-api.md)）再查前端 + BFF，已前置进 `build`；测试夹具的能力集一律用 `src/__tests__/fixtures.ts` 的 `caps({...})`，勿手写全字段字面量。
+- **类型检查不在 `test` 里（勿只看测试全绿）**：`vite`/`vitest` 都走 esbuild、不做类型检查；新增 `Capabilities`/`Selected` 等必填字段漏了照样跑绿（2026-10：40 条基线错误静默存在）。`npm run -w devconsole typecheck` 会**先构建 runtime**（契约类型来自 `@lingshu/runtime` 的 `dist`，见 `runtime/docs/program-api.md`）再查前端 + BFF，已前置进 `build`；测试夹具的能力集一律用 `src/__tests__/fixtures.ts` 的 `caps({...})`，勿手写全字段字面量。
 - **插件目录禁回退 monorepo 相对路径（勿回退）**：解析统一走 `server/src/plugin-service.ts` 的 `pluginsDir()`（`?dir=` / `--plugins-dir` / `LINGSHU_PLUGINS_DIR` / `<cwd>/plugins` 依次取第一个存在的）；母仓用符号链接 `devconsole/plugins → ../lingshu-plugins`（已 gitignore、发布不带），测试缺语料整组 `skipIf` 跳过（母仓 CI 设 `LINGSHU_REQUIRE_PLUGIN_CORPUS=1` 变硬失败，详见 `docs/build-and-typecheck.md`）。
 
 ### 预览导航与块渲染（详见 `docs/preview-navigation.md`）
