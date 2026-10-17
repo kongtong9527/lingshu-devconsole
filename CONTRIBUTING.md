@@ -64,7 +64,7 @@ npm test
 
 - **`npm test` does not type-check** (Vite and Vitest use esbuild). `npm run build` runs `typecheck` first;
   a wrong contract field can leave the tests green and the build red.
-- Contract types are resolved from the **installed** `@lingshu/runtime` package, so run `npm ci` first
+- Contract types are resolved from the **installed** `lingshu-runtime` package, so run `npm ci` first
   and re-check after the runtime dependency changes.
 - Tests that need a plugin corpus **skip themselves** in this repository (no corpus ships here). Do **not**
   set `LINGSHU_REQUIRE_PLUGIN_CORPUS=1` — that flag means "the corpus must be present" and belongs to the
@@ -75,7 +75,7 @@ npm test
 These are documented in more detail in [`docs/`](docs) and [`AGENTS.md`](AGENTS.md); the short version:
 
 - **Never re-implement the card-DSL verdict.** Import `validateCardDSL` / `shouldFallbackCard` from
-  `@lingshu/runtime`. A second copy is how the hosts drifted apart before.
+  `lingshu-runtime`. A second copy is how the hosts drifted apart before.
 - **Never hard-code a plugin directory.** Resolution goes through the BFF's resolver
   (`?dir=` → `LINGSHU_PLUGINS_DIR` / `--plugins-dir` → `<cwd>/plugins`). No sibling-checkout paths.
 - **Preview must render what the runtime and the device render.** A preview that lies about the data is

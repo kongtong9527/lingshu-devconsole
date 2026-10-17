@@ -1,7 +1,6 @@
 {
-  "name": "@lingshu/devconsole",
+  "name": "lingshu-devconsole",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n server,vite -c blue,green \"npm:dev:server\" \"npm:dev:vite\"",
@@ -9,14 +8,14 @@
     "dev:vite": "vite",
     "build:web": "vite build",
     "build:server": "tsc -p server/tsconfig.json",
-    "build:runtime": "echo \"契约类型取自已安装的 @lingshu/runtime（母仓专属的 build:runtime 已移除）\"",
+    "build:runtime": "echo \"契约类型取自已安装的 lingshu-runtime（母仓专属的 build:runtime 已移除）\"",
     "typecheck": "tsc --noEmit && tsc -p server/tsconfig.json --noEmit",
     "build": "npm run typecheck && npm run build:server && npm run build:web",
     "start": "node server/dist/index.js",
     "test": "vitest run"
   },
   "dependencies": {
-    "@lingshu/runtime": "git+https://github.com/kongtong9527/lingshu-runtime.git#v0.1.5",
+    "lingshu-runtime": "^1.0.0",
     "fastify": "^4.27.0",
     "hls.js": "^1.6.16",
     "playwright-core": "^1.63.0",
@@ -47,5 +46,9 @@
   "homepage": "https://github.com/kongtong9527/lingshu-devconsole#readme",
   "bugs": {
     "url": "https://github.com/kongtong9527/lingshu-devconsole/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

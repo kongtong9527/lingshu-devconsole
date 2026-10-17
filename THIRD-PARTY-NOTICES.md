@@ -41,7 +41,7 @@ Runtime dependencies:
 
 | Package | License | Upstream |
 | --- | --- | --- |
-| `@lingshu/runtime` | MIT | <https://github.com/kongtong9527/lingshu-runtime> |
+| `lingshu-runtime` | MIT | <https://github.com/kongtong9527/lingshu-runtime> |
 | `fastify` | MIT | <https://github.com/fastify/fastify> |
 | `hls.js` | Apache-2.0 | <https://github.com/video-dev/hls.js> |
 | `playwright-core` | Apache-2.0 | <https://github.com/microsoft/playwright> |
@@ -73,7 +73,7 @@ Notes:
 
 ### 3.1 MIT License
 
-Applies to: `@lingshu/runtime`, `fastify`, `react`, `react-dom`, `zustand`, and every dependency marked
+Applies to: `lingshu-runtime`, `fastify`, `react`, `react-dom`, `zustand`, and every dependency marked
 MIT in §2.
 
 ```text

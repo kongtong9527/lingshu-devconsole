@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import type { ServerResponse } from 'node:http'
 import { sharedUiHandler, resolvePrompt, addStream, removeStream } from '../ui-bridge.js'
-import type { UiPrompt } from '@lingshu/runtime'
+import type { UiPrompt } from 'lingshu-runtime'
 
 /** 伪造 SSE 连接：只捕获 write 的帧（addStream 只用 .write） */
 function makeStream(): { res: ServerResponse; frames: string[] } {

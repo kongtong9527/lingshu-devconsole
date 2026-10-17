@@ -12,7 +12,7 @@ import {
   type AccountSchema,
   type CookieJar,
   type UiRequestHandler,
-} from '@lingshu/runtime'
+} from 'lingshu-runtime'
 import { fetchHtmlViaBrowser, type BrowserMode } from './browser-channel.js'
 
 /**

@@ -25,7 +25,7 @@
 ## recommendations 块块头：`title` 与 `viewMore`（2026-10）
 
 `recommendations` 块新增两个**块级可选字段**（契约见 `runtime/src/types.ts` 的
-`ContentBlock`；DevConsole 经 `@lingshu/runtime` 取类型，宿主侧只消费不改契约）：
+`ContentBlock`；DevConsole 经 `lingshu-runtime` 取类型，宿主侧只消费不改契约）：
 
 - **`title?`（块级区标题）**：`BlockRenderer` 的 recommendations case 恒渲染块头
   `block.title ?? '推荐'`——与 `text`/`tags`/`tagGroups` 块的 title 惯例一致（缺省即

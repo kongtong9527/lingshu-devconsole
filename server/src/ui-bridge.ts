@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type { ServerResponse } from 'node:http'
-import type { UiPrompt, UiResponse, UiRequestHandler } from '@lingshu/runtime'
+import type { UiPrompt, UiResponse, UiRequestHandler } from 'lingshu-runtime'
 
 /**
  * $lib.ui 的 DevConsole 桥（ADR-0006）。

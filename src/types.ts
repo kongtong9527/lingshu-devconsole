@@ -40,8 +40,8 @@ export type {
   AccountLoginResult,
   UiPrompt,
   UiButton,
-} from '@lingshu/runtime'
-import type { PluginMeta, HttpRecord, SettingField, AccountSchema } from '@lingshu/runtime'
+} from 'lingshu-runtime'
+import type { PluginMeta, HttpRecord, SettingField, AccountSchema } from 'lingshu-runtime'
 
 export interface Capabilities {
   list: boolean

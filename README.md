@@ -8,7 +8,7 @@
 
 > [!IMPORTANT]
 > **Lingshu (灵枢) DevConsole is the web debug console of a plugin-driven content-aggregation runtime.** It
-> runs `.plugin.js` files through the Lingshu runtime (`@lingshu/runtime`) and gives you a visual way to
+> runs `.plugin.js` files through the Lingshu runtime (`lingshu-runtime`) and gives you a visual way to
 > pick a plugin, run an action, inspect the raw JSON, render a preview of the result, and trace the HTTP
 > requests a plugin makes.
 >
@@ -37,7 +37,7 @@
 Two design points worth knowing before you read the code:
 
 - **Contract types come from the runtime package.** The card-DSL validator (`validateCardDSL`,
-  `shouldFallbackCard`) and the contract types are imported from `@lingshu/runtime`'s built `dist/`,
+  `shouldFallbackCard`) and the contract types are imported from `lingshu-runtime`'s built `dist/`,
   never re-implemented here — one behaviour for all hosts.
 - **The plugin directory is always explicit.** The BFF resolves it from the request (`?dir=` /
   `options.dir`), then `LINGSHU_PLUGINS_DIR` (also written by the `--plugins-dir <path>` server flag), then
@@ -62,7 +62,7 @@ npm run build
 LINGSHU_PLUGINS_DIR=/path/to/plugins npm run dev
 ```
 
-> **Cross-repo dependency (`@lingshu/runtime`)**: it is consumed as a git dependency until the
+> **Cross-repo dependency (`lingshu-runtime`)**: it is consumed as a git dependency until the
 > package is published to npm. npm resolves GitHub git dependencies over **ssh** (`ssh://git@github.com/…`),
 > which fails on machines without a GitHub SSH key. If `npm ci` stops with
 > `Permission denied (publickey)`, map it back to https once:
@@ -133,7 +133,7 @@ overrides the BFF port (default `5181`).
 
 **Type checking is not part of `npm test`.** Vite and Vitest both use esbuild, which does not type-check, so
 a wrong contract field can leave the test suite green. `npm run build` (and `npm run typecheck`) is what CI
-relies on. Type checking resolves the contract types from the **installed** `@lingshu/runtime` package,
+relies on. Type checking resolves the contract types from the **installed** `lingshu-runtime` package,
 so install dependencies before running it.
 
 ### Tests and the plugin corpus
@@ -148,10 +148,10 @@ by design.
 
 ## The runtime dependency
 
-This console imports `@lingshu/runtime` for the sandbox, the action dispatch and the card-DSL validator.
+This console imports `lingshu-runtime` for the sandbox, the action dispatch and the card-DSL validator.
 While the npm package is unpublished, the dependency is consumed from source (a git dependency pinned to a
 release tag, or a built checkout); the contract types are taken from that package's `dist/`, which is built
-by `npm run build` inside the runtime repository. Once `@lingshu/runtime` is on npm, that install is
+by `npm run build` inside the runtime repository. Once `lingshu-runtime` is on npm, that install is
 the recommended route.
 
 ## Security
@@ -185,4 +185,4 @@ Each repository is an independent snapshot with its own license; none of them co
 
 ---
 
-Snapshot: `2026-10-17` · version `0.1.5`
+Snapshot: `2026-10-17` · version `0.1.7`

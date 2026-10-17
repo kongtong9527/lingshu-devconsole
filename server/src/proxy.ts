@@ -4,8 +4,8 @@
 import { createDecipheriv } from 'node:crypto'
 import { Readable } from 'node:stream'
 import sharp from 'sharp'
-import type { ImageTransport } from '@lingshu/runtime'
-import { isChallengeProbe } from '@lingshu/runtime'
+import type { ImageTransport } from 'lingshu-runtime'
+import { isChallengeProbe } from 'lingshu-runtime'
 
 export const DEV_UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 ' +

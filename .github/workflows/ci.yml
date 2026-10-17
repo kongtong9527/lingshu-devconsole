@@ -6,7 +6,7 @@
 #
 # Layout note: here the dev console *is* the repository root (`src/`, `server/src/`, `docs/`), so the
 # monorepo's `npm run -w devconsole <script>` calls become plain `npm run <script>`, and the contract types
-# come from the installed `@lingshu/runtime` package instead of a sibling checkout.
+# come from the installed `lingshu-runtime` package instead of a sibling checkout.
 
 name: CI
 
@@ -35,7 +35,7 @@ jobs:
           node-version: 20 # Node >= 18.17 is required (sharp 0.33 / Vite 5); CI pins the current LTS
           cache: npm
 
-      # 依赖里含跨仓 git 依赖 `@lingshu/runtime`。npm 在解析 GitHub 的 git 依赖时会写成
+      # 依赖里含跨仓 git 依赖 `lingshu-runtime`。npm 在解析 GitHub 的 git 依赖时会写成
       # `ssh://git@github.com/…`，而 runner 没有 SSH key —— 所以这里**无条件**把 ssh 形态改写回
       # https；私有阶段再把 PAT 拼进 https（公开阶段匿名 https 直接可用，无需任何凭据）。
       # 私有阶段需要：Settings → Secrets and variables → Actions 里加 `LINGSHU_RUNTIME_TOKEN`
@@ -67,7 +67,7 @@ jobs:
           fi
 
       # `npm run build` = type check (front-end + BFF) → compile the BFF → bundle the web app.
-      # It resolves the card-DSL/contract types from the installed `@lingshu/runtime` package. There is
+      # It resolves the card-DSL/contract types from the installed `lingshu-runtime` package. There is
       # no sibling `../runtime` in this repository, so the snapshot's `package.json` must not keep the
       # upstream monorepo's `build:runtime` step (which builds a sibling checkout) in `typecheck`/`build`.
       - name: Type check and build

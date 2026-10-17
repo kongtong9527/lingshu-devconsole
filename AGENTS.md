@@ -24,13 +24,13 @@ DevConsole 是灵枢的可视化调试台（React + Fastify）。本文件是 **
 
 ### 构建与类型检查（详见 `docs/build-and-typecheck.md`）
 
-- **类型检查不在 `test` 里（勿只看测试全绿）**：`vite`/`vitest` 都走 esbuild、不做类型检查；新增 `Capabilities`/`Selected` 等必填字段漏了照样跑绿（2026-10：40 条基线错误静默存在）。`npm run -w devconsole typecheck` 会**先构建 runtime**（契约类型来自 `@lingshu/runtime` 的 `dist`，见 `runtime/docs/program-api.md`）再查前端 + BFF，已前置进 `build`；测试夹具的能力集一律用 `src/__tests__/fixtures.ts` 的 `caps({...})`，勿手写全字段字面量。
-- **浏览器侧值 import 别从 `@lingshu/runtime` 包根拿（勿回退）**：包根是 **Node 宿主**入口，会带进 `runtime/storage.js` 等 Node-only 模块，`vite build` 报 `"fileURLToPath" is not exported by "__vite-browser-external"` 而整包失败——**`vite dev` 与 `vitest` 都看不出来**（esbuild 容忍）；纯逻辑走 `@lingshu/runtime/card-dsl`（详见 `runtime/docs/program-api.md`）。**生产构建已进 CI**（母仓 `npm run -w devconsole build`、公开仓 `npm run build`）。
+- **类型检查不在 `test` 里（勿只看测试全绿）**：`vite`/`vitest` 都走 esbuild、不做类型检查；新增 `Capabilities`/`Selected` 等必填字段漏了照样跑绿（2026-10：40 条基线错误静默存在）。`npm run -w devconsole typecheck` 会**先构建 runtime**（契约类型来自 `lingshu-runtime` 的 `dist`，见 `runtime/docs/program-api.md`）再查前端 + BFF，已前置进 `build`；测试夹具的能力集一律用 `src/__tests__/fixtures.ts` 的 `caps({...})`，勿手写全字段字面量。
+- **浏览器侧值 import 别从 `lingshu-runtime` 包根拿（勿回退）**：包根是 **Node 宿主**入口，会带进 `runtime/storage.js` 等 Node-only 模块，`vite build` 报 `"fileURLToPath" is not exported by "__vite-browser-external"` 而整包失败——**`vite dev` 与 `vitest` 都看不出来**（esbuild 容忍）；纯逻辑走 `lingshu-runtime/card-dsl`（详见 `runtime/docs/program-api.md`）。**生产构建已进 CI**（母仓 `npm run -w devconsole build`、公开仓 `npm run build`）。
 - **插件目录禁回退 monorepo 相对路径（勿回退）**：解析统一走 `server/src/plugin-service.ts` 的 `pluginsDir()`（`?dir=` / `--plugins-dir` / `LINGSHU_PLUGINS_DIR` / `<cwd>/plugins` 依次取第一个存在的）；母仓用符号链接 `devconsole/plugins → ../lingshu-plugins`（已 gitignore、发布不带），测试缺语料整组 `skipIf` 跳过（母仓 CI 设 `LINGSHU_REQUIRE_PLUGIN_CORPUS=1` 变硬失败，详见 `docs/build-and-typecheck.md`）。
 
 ### 预览导航与块渲染（详见 `docs/preview-navigation.md`）
 
-- **列表项卡片 DSL 预览（ADR-0050，勿回退）**：有 card 走 `CardPreview` 布局预览，无卡走老行；未知节点跳过、根非法整卡回退（**判定必须 import `@lingshu/runtime` 的 `shouldFallbackCard`，禁自写副本**——曾三端口径不一，未知 root 一处回退一处渲空卡，由 `contracts/conformance/card-root.json` 抓出）；节点点击无 target 冒泡整卡、有显式 target 拦截（invoke 留桩禁用+warn，actionBar 跟整卡，写侧 target 预览内无动作不炸——写侧验证走 runtime/iOS，勿在预览补调写侧，详见 `docs/card-dsl.md`）。
+- **列表项卡片 DSL 预览（ADR-0050，勿回退）**：有 card 走 `CardPreview` 布局预览，无卡走老行；未知节点跳过、根非法整卡回退（**判定必须 import `lingshu-runtime` 的 `shouldFallbackCard`，禁自写副本**——曾三端口径不一，未知 root 一处回退一处渲空卡，由 `contracts/conformance/card-root.json` 抓出）；节点点击无 target 冒泡整卡、有显式 target 拦截（invoke 留桩禁用+warn，actionBar 跟整卡，写侧 target 预览内无动作不炸——写侧验证走 runtime/iOS，勿在预览补调写侧，详见 `docs/card-dsl.md`）。
 - **DSL 图片填充/定比必须与 iOS 同构（勿回退）**：`image.resizeMode` 缺省与非法值一律 `cover`、只有 `'contain'` 判等；图元素必须填满盒（`width/height:100%` + `object-fit` 居中，盒由 `aspect` 定比，`W:H` 须正有限数否则 16:9）——`.pv-card__img` 缺样式会让写侧从左上角裁、看不见真实裁剪，裁剪缺陷反复漏到 iOS（详见 `docs/card-dsl.md`）。
 - **老卡标签行/封面角标（勿回退）**：`tags`/`badges` 只活在无 `card` 老行（有卡走 DSL 预览），归一化收敛 `ListItemMeta.tsx`（禁各预览自写一套）；标签无路由禁冒泡整卡、角标禁点；**`relative` 时间口径必须与 iOS 逐档一致（恒「…前」，勿回落 `toLocaleDateString()`）**——预览和 App 不一致等于预览骗人（详见 `docs/preview-navigation.md`）。
 

@@ -7,7 +7,7 @@
 [English](README.md) · **简体中文**
 
 > [!IMPORTANT]
-> **灵枢调试台是「插件驱动的内容聚合运行时」的 Web 调试台**：它通过灵枢运行时（`@lingshu/runtime`）
+> **灵枢调试台是「插件驱动的内容聚合运行时」的 Web 调试台**：它通过灵枢运行时（`lingshu-runtime`）
 > 执行 `.plugin.js`，让你可视化地选插件、选动作、跑一次、看原始 JSON、看渲染预览，并追踪插件发出的 HTTP 请求。
 >
 > **本仓不含任何内容源、站点实现或内容策略。** 这里只有调试台本体（React 前端 + Fastify BFF）与宿主侧文档；
@@ -32,7 +32,7 @@
 读代码前值得先知道两点：
 
 - **契约类型来自运行时包。** 卡片 DSL 校验器（`validateCardDSL`、`shouldFallbackCard`）与契约类型一律
-  从 `@lingshu/runtime` 构建后的 `dist/` 导入，本仓**不另写一套**——三端同口径。
+  从 `lingshu-runtime` 构建后的 `dist/` 导入，本仓**不另写一套**——三端同口径。
 - **插件目录永远显式指定。** BFF 依次从请求（`?dir=` / `options.dir`）、`LINGSHU_PLUGINS_DIR`
   （server 的 `--plugins-dir <path>` 也写这个变量）、`<cwd>/plugins` 解析；**不会**回退到任何兄弟目录。
   一个都没有时：插件列表为空，run 会把已尝试的候选路径原样回给前端。
@@ -54,7 +54,7 @@ npm run build
 LINGSHU_PLUGINS_DIR=/path/to/plugins npm run dev
 ```
 
-> **跨仓依赖（`@lingshu/runtime`）**：在它发上 npm 之前以 git 依赖消费。npm 解析 GitHub 的 git 依赖时
+> **跨仓依赖（`lingshu-runtime`）**：在它发上 npm 之前以 git 依赖消费。npm 解析 GitHub 的 git 依赖时
 > 会走 **ssh**（`ssh://git@github.com/…`），没有配 GitHub SSH key 的机器会直接失败。若 `npm ci` 报
 > `Permission denied (publickey)`，做一次 https 映射即可：
 >
@@ -120,7 +120,7 @@ BFF **只提供 API，不托管前端静态文件**。`npm run build:web` 把前
 | `npm test` | Vitest（jsdom） |
 
 **类型检查不在 `npm test` 里。** Vite 与 Vitest 都走 esbuild，不做类型检查——契约字段写错，测试照样全绿；
-CI 依赖的是 `npm run build`（内部前置 `typecheck`）。类型检查解析的是**已安装的** `@lingshu/runtime`
+CI 依赖的是 `npm run build`（内部前置 `typecheck`）。类型检查解析的是**已安装的** `lingshu-runtime`
 包里的 `dist/`，所以请先装依赖再跑。
 
 ### 测试与插件语料
@@ -133,9 +133,9 @@ CI 依赖的是 `npm run build`（内部前置 `typecheck`）。类型检查解�
 
 ## 运行时的依赖关系
 
-本调试台从 `@lingshu/runtime` 导入沙箱、动作分派与卡片 DSL 校验器。在 npm 包尚未发布之前，
+本调试台从 `lingshu-runtime` 导入沙箱、动作分派与卡片 DSL 校验器。在 npm 包尚未发布之前，
 依赖以源码形态消费（锁定到 release tag 的 git 依赖，或本地构建好的检出）；契约类型取自该包构建后的
-`dist/`（由运行时仓的 `npm run build` 产出）。`@lingshu/runtime` 上 npm 之后，直接安装即为推荐路径。
+`dist/`（由运行时仓的 `npm run build` 产出）。`lingshu-runtime` 上 npm 之后，直接安装即为推荐路径。
 
 ## 安全
 
@@ -165,4 +165,4 @@ CI 文件由上游模板注入，**不要在本仓直接改**；PR 必须回流�
 
 ---
 
-快照：`2026-10-17` · 版本 `0.1.5`
+快照：`2026-10-17` · 版本 `0.1.7`

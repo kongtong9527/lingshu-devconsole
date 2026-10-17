@@ -22,7 +22,7 @@
       ids, real content, scraped data, fixtures copied from a site, or site credentials anywhere — code,
       tests, docs).
 - [ ] If it touches preview rendering: the preview still matches what the runtime and the device render, and
-      the card-DSL verdict still comes from `@lingshu/runtime` (no local copy).
+      the card-DSL verdict still comes from `lingshu-runtime` (no local copy).
 - [ ] If it touches plugin-directory resolution or config: no hard-coded sibling paths, and the documented
       resolution order (`?dir=` → `LINGSHU_PLUGINS_DIR` / `--plugins-dir` → `<cwd>/plugins`) is unchanged.
 - [ ] I did **not** set `LINGSHU_REQUIRE_PLUGIN_CORPUS` in CI or in a committed config (it belongs to the
