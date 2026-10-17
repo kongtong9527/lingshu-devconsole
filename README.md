@@ -179,10 +179,10 @@ not a CLA.
 | --- | --- |
 | [`kongtong9527/lingshu-runtime`](https://github.com/kongtong9527/lingshu-runtime) | The runtime and the `lingshu` CLI (the sandbox this console drives) |
 | [`kongtong9527/lingshu-plugins`](https://github.com/kongtong9527/lingshu-plugins) | Small set of documentation-grade sample plugins plus a manifest |
-| [`kongtong9527/lingshu-ios`](https://github.com/kongtong9527/lingshu-ios) | SwiftUI + JavaScriptCore host that runs the same `.plugin.js` files on device |
+| `lingshu-ios` | SwiftUI + JavaScriptCore host that runs the same `.plugin.js` files on device (source not published yet) |
 
 Each repository is an independent snapshot with its own license; none of them contains content sources.
 
 ---
 
-Snapshot: `2026-10-17` · version `0.1.7`
+Snapshot: `2026-10-17` · version `0.1.8`

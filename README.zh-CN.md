@@ -159,10 +159,10 @@ CI 文件由上游模板注入，**不要在本仓直接改**；PR 必须回流�
 | --- | --- |
 | [`kongtong9527/lingshu-runtime`](https://github.com/kongtong9527/lingshu-runtime) | 运行时与 `lingshu` 命令行（本调试台驱动的沙箱） |
 | [`kongtong9527/lingshu-plugins`](https://github.com/kongtong9527/lingshu-plugins) | 少量「教材级」示例插件与 manifest |
-| [`kongtong9527/lingshu-ios`](https://github.com/kongtong9527/lingshu-ios) | SwiftUI + JavaScriptCore 宿主，在设备上跑同一份 `.plugin.js` |
+| `lingshu-ios` | SwiftUI + JavaScriptCore 宿主，在设备上跑同一份 `.plugin.js`（**源码暂未公开**） |
 
 每个仓库都是独立快照、各自持有许可；它们都不含任何内容源。
 
 ---
 
-快照：`2026-10-17` · 版本 `0.1.7`
+快照：`2026-10-17` · 版本 `0.1.8`
