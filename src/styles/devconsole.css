@@ -815,7 +815,7 @@
   box-shadow: var(--pv-shadow-card);
 }
 
-/* DSL image 节点（ADR-0050，CardPreview）：图恒填满盒，居中由 object-fit 保证，盒由 aspect 定比。
+/* DSL image 节点（CardPreview）：图恒填满盒，居中由 object-fit 保证，盒由 aspect 定比。
    与 iOS CardCoverImageView 同语义（cover 缺省 / contain 可选，详见 docs/card-dsl.md）。
    缺这段样式 = 图按自身尺寸溢出、被父级 overflow:hidden 从左上角裁，与 iOS 居中裁剪不是一回事。 */
 .pv-card__img {
@@ -1227,7 +1227,7 @@ button.pv-recommendation:hover {
   border-radius: var(--pv-radius-inner);
   background: #111827;
 }
-/* 视频清晰度菜单（ADR-0027）：播放器右上角浮动按钮 + 弹出档位列表 */
+/* 视频清晰度菜单：播放器右上角浮动按钮 + 弹出档位列表 */
 .pv-video-wrap {
   position: relative;
 }
@@ -1454,7 +1454,7 @@ button.pv-recommendation:hover {
   align-items: center;
 }
 
-/* ListingsPreview（ADR-0015：预设目录页页签） */
+/* ListingsPreview（预设目录页页签） */
 .pv-listings-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -1498,7 +1498,7 @@ button.pv-recommendation:hover {
   word-break: break-all;
 }
 
-/* 导航树（ADR-0025：url 页面通道 / children 分组 / kind 角标） */
+/* 导航树（url 页面通道 / children 分组 / kind 角标） */
 .pv-listings-tree {
   padding: var(--dc-space-4);
 }
@@ -1555,7 +1555,7 @@ button.pv-recommendation:hover {
   margin-bottom: var(--dc-space-2);
 }
 
-/* 懒播放占位（ADR-0026：video 无 url + target.play） */
+/* 懒播放占位（video 无 url + target.play） */
 .pv-video-lazy {
   position: relative;
   border: 1px solid var(--pv-color-border);
@@ -1675,7 +1675,7 @@ button.pv-recommendation:hover {
   border-radius: var(--dc-radius-sm);
   font-weight: var(--dc-font-weight-semibold);
 }
-/* 章节内容阅读（ADR-0026：ReadingPage.content 图文混排） */
+/* 章节内容阅读（ReadingPage.content 图文混排） */
 .pv-reading__content {
   padding: var(--dc-space-5) var(--dc-space-6);
   font-size: var(--dc-font-size-md);
@@ -1782,7 +1782,7 @@ button.pv-recommendation:hover {
   }
 }
 
-/* ===== $lib.ui 直问用户（ADR-0006）===== */
+/* ===== $lib.ui 直问用户===== */
 .dc-ui-overlay {
   position: fixed;
   inset: 0;
@@ -1845,7 +1845,7 @@ button.pv-recommendation:hover {
   word-break: break-all;
 }
 
-/* ── episodes 块（线路 × 剧集，ADR-0020）────────────── */
+/* ── episodes 块（线路 × 剧集）────────────── */
 .pv-episodes {
   display: flex;
   flex-direction: column;

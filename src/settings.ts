@@ -1,7 +1,7 @@
 /**
  * 插件设置值的本地持久化（用户偏好，宿主侧 localStorage）。
  *
- * 与 runtime 的 `$lib.storage`（插件自管的文件持久缓存）严格分家（ADR-0004）：
+ * 与 runtime 的 `$lib.storage`（插件自管的文件持久缓存）严格分家：
  * - 本层只存「用户在设置表单里填的值」，每次 run 由 store 注入为 `$lib.settings`；
  * - 插件运行时的缓存走 `$lib.storage`，不经过这里。
  *

@@ -25,7 +25,7 @@ function writePlugin(id: string, body: string): string {
 
 const DETAIL_STUB = `async function fetchDetail(url) { return { title: url, content: [] } }`
 
-describe('plugin-service 浏览器通道与结构化错误（ADR-0045）', () => {
+describe('plugin-service 浏览器通道与结构化错误', () => {
   it('插件抛 CHALLENGE：code/url 透传到 RunResponse（预览区切挑战态用）', async () => {
     const dir = writePlugin(
       'challenge-codec',

@@ -51,9 +51,9 @@ export interface Capabilities {
   categories: boolean
   listings: boolean
   explore: boolean
-  /** 是否导出 getTags（标签索引页，ADR-0037） */
+  /** 是否导出 getTags（标签索引页） */
   tags: boolean
-  /** 是否导出 fetchPlayUrl（播放页解析，ADR-0020） */
+  /** 是否导出 fetchPlayUrl（播放页解析） */
   play: boolean
   /** 是否声明了设置面（导出 getSettingsSchema） */
   settings: boolean
@@ -89,7 +89,7 @@ export interface RunResponse {
   ok: boolean
   data?: unknown
   error?: string
-  /** 结构化错误码（CHALLENGE = 挑战页，预览区切验证态，ADR-0045） */
+  /** 结构化错误码（CHALLENGE = 挑战页，预览区切验证态） */
   code?: string
   /** 结构化错误关联 URL（挑战页地址） */
   url?: string

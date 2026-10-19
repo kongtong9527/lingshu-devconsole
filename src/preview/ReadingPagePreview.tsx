@@ -16,7 +16,7 @@ export default function ReadingPagePreview({
 }) {
   const imageEncryption = getImageEncryption(data.metadata)
   const imageTransport = data.metadata?.imageTransport as ImageTransport | undefined
-  // ADR-0026：content 优先（章节内容，图文任意混排）；缺则回退 pages 逐张转 image 块
+  // content 优先（章节内容，图文任意混排）；缺则回退 pages 逐张转 image 块
   const hasContent = !!data.content?.length
 
   return (

@@ -1,4 +1,4 @@
-// DevConsole headed 浏览器通道（ADR-0045：桌面可见手过验证）。
+// DevConsole headed 浏览器通道（桌面可见手过验证）。
 //
 // 为什么是 headed sidecar（背景结论，不可回退）：
 // - 前端 fetch 中继不可行：DevConsole 前端 origin 是 localhost，跨源 fetch
@@ -6,7 +6,7 @@
 // - 新标签页手过沾不到 Node 重试的光：clearance 绑 TLS 指纹，跨网络栈失效；
 // - 常驻无头 sidecar 已知无解：WAF 分辨自动/人手加载，隐藏自动仍 403。
 // 抓取与手过必须在同一可见浏览器上下文里（桌面版「同 store 同 UA」，
-// 对齐 ADR-0044 红线）：playwright-core + 本机 Chrome + 落盘 profile。
+// 对齐红线）：playwright-core + 本机 Chrome + 落盘 profile。
 
 import os from 'node:os'
 import path from 'node:path'
@@ -18,7 +18,7 @@ export interface BrowserFetchOptions {
   timeout?: number
   userAgent?: string
   /**
-   * 通道形态（ADR-0046）：'persistent'（默认，落盘 profile 复用，常驻 Dock 一图标）|
+   * 通道形态：'persistent'（默认，落盘 profile 复用，常驻 Dock 一图标）|
    * 'ephemeral'（类无痕：每次操作开全新上下文，用完关上下文即焚；无待复用验证窗时
    * 连 browser 进程一起关，空闲 Dock 归零，下次按需重起）。
    * 缺省即 'persistent'（老调用零回归）。
@@ -26,7 +26,7 @@ export interface BrowserFetchOptions {
   mode?: BrowserMode
 }
 
-/** 浏览器通道形态（ADR-0046）：持久复用 vs 一次性即焚 */
+/** 浏览器通道形态：持久复用 vs 一次性即焚 */
 export type BrowserMode = 'persistent' | 'ephemeral'
 
 export interface BrowserFetchResult {
@@ -66,7 +66,7 @@ export const _internals: {
 let context: BrowserContext | null = null
 let contextUserAgent: string | undefined
 /**
- * 持久验证页（ADR-0047 修订：只留最新一个——此前连续打开持久验证窗从不关旧页，
+ * 持久验证页（修订：只留最新一个——此前连续打开持久验证窗从不关旧页，
  * 自动验证循环起来直接攒出一排 Cloudflare 标签页；与一次性"只留一个验证窗"同构）。
  */
 let persistentVerifyPages: Page[] = []
@@ -128,7 +128,7 @@ async function launchContext(userAgent?: string): Promise<BrowserContext> {
 }
 
 /**
- * 一次性通道的共享 headed browser（ADR-0046 修订4）。
+ * 一次性通道的共享 headed browser（修订4）。
  *
  * 为什么不是每次 launch 全新 browser：每次 launch 都是独立浏览器进程，macOS 给
  * 每个进程一个 Dock 图标，点几次验证窗就攒一排；且验证窗与抓取分属不同进程时，
@@ -293,7 +293,7 @@ function samePageUrl(a: string, b: string): boolean {
 }
 
 /**
- * 一次性抓取（ADR-0046 修订2）：验证窗里已是目标页时零新请求直接读内容
+ * 一次性抓取（修订2）：验证窗里已是目标页时零新请求直接读内容
  * （按窗口计数站点的最优解：验证打开是唯一一次请求，重试不再发请求）；
  * 读出来是挑战页则报 403 并把窗口留着（用户过完验证直接重试，不用重新开窗；
  * 留窗期间 browser 常驻，Dock 一图标）；
@@ -406,7 +406,7 @@ async function fetchHtmlEphemeralInner(
 /**
  * 一次性验证窗口：在共享 headed browser 里开全新类无痕上下文并前置，留给用户手过
  * 确认；上下文暂存为待复用，下一次一次性抓取在同一上下文里读/抓
- * （ADR-0046 Q9 联动语义——验证与抓取必须同一上下文，否则验证白过；
+ * （联动语义——验证与抓取必须同一上下文，否则验证白过；
  * 修订2：已是目标页时零新请求直接读，验证没过则窗口保留）。
  * clearance 不落盘。连续打开不堆积：新窗打开前关掉上一个未消费的验证上下文。
  * 修订4：开窗前先关持久浏览器（两种通道各占一个 Dock 图标，不互关就成两个）。
@@ -471,11 +471,11 @@ export function getBrowserStatus(): BrowserStatus {
 }
 
 /**
- * 打开验证窗口（被动触发，ADR-0044 Q8 同构：用户点了「打开验证窗口」才起）。
+ * 打开验证窗口（被动触发，同构：用户点了「打开验证窗口」才起）。
  * - persistent（默认）：在持久上下文里开页并前置，用户人手过 Turnstile；clearance
  *   留在落盘 profile，后续重抓即沾光。验证期间不做任何程序化导航（防连带封首页）。
  *   连续打开不堆积（只留最新一个验证页，旧的即关）。
- * - ephemeral（ADR-0046）：在共享 headed browser 里开全新类无痕上下文并前置，
+ * - ephemeral：在共享 headed browser 里开全新类无痕上下文并前置，
  *   留给下一次 ephemeral 抓取复用（同一上下文，抓完即焚）；clearance 不落盘。
  *   须与下一次 ephemeral 抓取联动使用（Q9），连续打开不堆积（只留一个验证窗）。
  */
@@ -492,7 +492,7 @@ export async function openVerifyWindow(
   }).catch((e: any) => {
     throw challengeFailure(url, e?.message ?? String(e))
   })
-  // 防堆积：只留最新一个持久验证页（旧的不关就是一排标签页，ADR-0047 实证）
+  // 防堆积：只留最新一个持久验证页（旧的不关就是一排标签页，实证）
   for (const p of persistentVerifyPages.splice(0)) await p.close().catch(() => undefined)
   const page: Page = await ctx.newPage()
   persistentVerifyPages.push(page)
@@ -506,7 +506,7 @@ export async function openVerifyWindow(
  * - 403/503 挑战页原文也 resolve（挑战识别与抛错在 `$lib` 边界统一做——runtime
  *   `run.ts` 包 `onBrowserFetch` 处，与 `$lib.http.get` 同表；插件不再写判定）；
  * - 仅网络异常/浏览器不可用时 reject（不可用时带 code=CHALLENGE，引导验证窗口）。
- * - mode='ephemeral'（ADR-0046）：优先复用待验证上下文（有则同一上下文抓、抓完即焚），
+ * - mode='ephemeral'：优先复用待验证上下文（有则同一上下文抓、抓完即焚），
  *   否则开全新类无痕上下文；打 `headed-ephemeral` 标记、cookie 置空；无待复用时连
  *   browser 一起关（空闲 Dock 归零），开窗时先关持久（切模式不双图标）；
  *   缺省 'persistent'（老行为，打 `headed` + 回传 cookie，常驻）。
@@ -558,7 +558,7 @@ export async function closeBrowser(): Promise<void> {
   await shutdownPersistent()
 }
 
-/** 验证窗等待态（ADR-0047 自动验证轮询用，全是本地读、零新请求） */
+/** 验证窗等待态（自动验证轮询用，全是本地读、零新请求） */
 export interface VerifyState {
   /** 是否还有可等的验证窗（false = 用户关了/进程没了，轮询该停） */
   pending: boolean
@@ -574,7 +574,7 @@ function cookieDomainMatch(cookieDomain: string, host: string): boolean {
 }
 
 /**
- * 读验证等待态（ADR-0047）：给自动验证轮询用，**只读本地、不发任何新请求**
+ * 读验证等待态：给自动验证轮询用，**只读本地、不发任何新请求**
  * （page.content()/cookies() 都是进程内读，不烧按窗口计数的声誉）。
  * - ephemeral：有待复用验证窗才 pending；正文无挑战特征即 passed（与抓取嗅探同串）。
  * - persistent：持久上下文存在才 pending；该域有 `cf_clearance` 即 passed

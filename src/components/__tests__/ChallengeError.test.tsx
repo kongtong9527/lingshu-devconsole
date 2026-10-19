@@ -49,7 +49,7 @@ describe('isChallengeResult（挑战态判定）', () => {
   })
 })
 
-describe('ChallengeError（挑战态 UI，ADR-0045 Q11）', () => {
+describe('ChallengeError（挑战态 UI）', () => {
   it('标题 + 三按钮 + 挑战说明', () => {
     render(
       <ChallengeError
@@ -66,7 +66,7 @@ describe('ChallengeError（挑战态 UI，ADR-0045 Q11）', () => {
     expect(screen.getByText('重试')).toBeTruthy()
   })
 
-  it('一次性按钮存在（ADR-0046）：文案 + 无 url 时同样禁用', () => {
+  it('一次性按钮存在：文案 + 无 url 时同样禁用', () => {
     render(
       <ChallengeError
         result={fail({
@@ -86,7 +86,7 @@ describe('ChallengeError（挑战态 UI，ADR-0045 Q11）', () => {
     expect((screen.getByText('重试') as HTMLButtonElement).disabled).toBe(false)
   })
 
-  it('自动开关：按插件记忆（ADR-0047，缺省关）', () => {
+  it('自动开关：按插件记忆（缺省关）', () => {
     render(
       <ChallengeError
         result={fail({ code: 'CHALLENGE', url: 'https://x.example/list', error: '被拦截' })}

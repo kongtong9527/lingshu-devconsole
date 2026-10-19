@@ -20,7 +20,7 @@ function delay(ms: number): Promise<string> {
   return new Promise((r) => setTimeout(() => r('pending'), ms))
 }
 
-describe('ui-bridge（$lib.ui 的 DevConsole 桥, ADR-0006）', () => {
+describe('ui-bridge（$lib.ui 的 DevConsole 桥）', () => {
   it('input：推 SSE 后挂起，resolvePrompt 后返回答案', async () => {
     const { res, frames } = makeStream()
     addStream(res)

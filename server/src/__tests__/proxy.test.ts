@@ -434,7 +434,7 @@ describe('fetchViaProxy（服务函数）', () => {
     expect((r.body as Buffer).toString('utf8')).toContain('/api/proxy?url=')
   })
 
-  it('503 + 挑战特征串同样识别（三端拉齐，ADR-0045 Q10）', async () => {
+  it('503 + 挑战特征串同样识别（三端拉齐）', async () => {
     vi.mocked(fetch).mockResolvedValueOnce(
       new Response('<html><body>cf-error under attack</body></html>', {
         status: 503,

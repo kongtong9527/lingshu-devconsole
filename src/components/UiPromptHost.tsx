@@ -3,7 +3,7 @@ import { openUiStream, respondUi } from '../api/client.js'
 import type { UiPrompt, UiButton } from '../types.js'
 
 /**
- * $lib.ui 的前端宿主（ADR-0006）：监听 SSE 流，把插件中途发起的「直问用户」渲染成
+ * $lib.ui 的前端宿主：监听 SSE 流，把插件中途发起的「直问用户」渲染成
  * 输入框/确认框/toast。input/confirm 收齐答案后 POST /api/ui/respond 回传，解封插件 await。
  * 挂载一次（App.tsx），全生命周期复用一条 EventSource。
  */

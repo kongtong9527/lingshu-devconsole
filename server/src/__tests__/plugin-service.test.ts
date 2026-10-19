@@ -87,7 +87,7 @@ describe.skipIf(!hasCorpus)('plugin-service', () => {
   })
 })
 
-describe('plugin-service 设置面（ADR-0004）', () => {
+describe('plugin-service 设置面', () => {
   /** 写一个临时插件文件并返回其目录 */
   function withTempPlugin(name: string, body: string): string {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lingshu-settings-'))

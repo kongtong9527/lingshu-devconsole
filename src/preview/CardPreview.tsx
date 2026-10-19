@@ -12,7 +12,7 @@ import LazyImage from './LazyImage.js'
 import { getImageEncryption } from './imageEncryption.js'
 import { isInvokeStub, isNoopTarget } from './jump.js'
 
-// 卡片 DSL 布局预览（ADR-0050 v1）：与 iOS CardView 同语义，样式可略差，只保布局正确性。
+// 卡片 DSL 布局预览（v1）：与 iOS CardView 同语义，样式可略差，只保布局正确性。
 // 安全：未知节点跳过，根非法由调用方回退老卡。
 // 点击：无 target 冒泡到整卡；有显式 target（含 noop）拦截不冒泡；invoke 留桩禁用+warn；actionBar 跟整卡。
 

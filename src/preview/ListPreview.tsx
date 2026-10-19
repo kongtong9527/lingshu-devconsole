@@ -18,7 +18,7 @@ export default function ListPreview() {
   const pagination = useStore((s) => s.listPagination)
   const loadingMore = useStore((s) => s.loadingMore)
   const loadMore = useStore((s) => s.loadMore)
-  // 落地列表页筛选组，两个来源（ADR-0066 起）：
+  // 落地列表页筛选组，两个来源（起）：
   //   ① 列表结果自声明的 `filters` —— 「只有抓到页面才知道」的筛选（video_site_c 工作室页题材滑块
   //      按工作室不同、只渲进 SSR HTML），优先级更高；
   //   ② 跳转携带的 `PageJumpTarget.list.filters`（Q11-a 静态筛选），只在①缺省时顶上。
@@ -37,7 +37,7 @@ export default function ListPreview() {
   const handleFilterChange = (next: typeof filterState) =>
     setFilterState((prev) => applyLinkageClear(groups, prev, next))
 
-  /** 条目点击：带结构化 target（ADR-0025 递归列表/合集）优先，缺省回退详情（或 reading） */
+  /** 条目点击：带结构化 target（递归列表/合集）优先，缺省回退详情（或 reading） */
   const jumpFor = (item: ListItem) =>
     toJumpPatch(item.target) ?? { action: jumpAction, target: item.url }
 
@@ -97,7 +97,7 @@ export default function ListPreview() {
             onClick={() => runWith(jumpFor(item))}
             aria-label={`查看 ${item.title}`}
           >
-            {/* 卡片 DSL 分流（ADR-0050 v1）：有卡走 DSL 预览，无卡走老行 */}
+            {/* 卡片 DSL 分流（v1）：有卡走 DSL 预览，无卡走老行 */}
             {!shouldFallbackCard(item) ? (
               <CardPreview item={item} onNodeTarget={nodeTargetFor} />
             ) : (

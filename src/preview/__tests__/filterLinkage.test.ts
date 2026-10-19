@@ -9,7 +9,7 @@ import {
   visibleGroups,
 } from '../filterState.js'
 
-// 联动求值器回归锁（ADR-0063，Q15-b）：与 iOS FilterStateTests/FilterLinkageTests 同案。
+// 联动求值器回归锁（Q15-b）：与 iOS FilterStateTests/FilterLinkageTests 同案。
 function group(patch: Partial<CategoryGroup> & { name: string; key: string }): CategoryGroup {
   return { ...patch } as CategoryGroup
 }

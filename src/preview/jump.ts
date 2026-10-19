@@ -12,9 +12,9 @@ export function toJumpPatch(target: PageJumpTarget | undefined): Partial<Selecte
   if (!target) return null
   switch (target.action) {
     case 'list': {
-      // 页面通道（ADR-0025）：带 url 用 url（宿主优先 url），缺省回退 category。
+      // 页面通道：带 url 用 url（宿主优先 url），缺省回退 category。
       // filters（落地列表页筛选组）透传给 ListPreview 渲染筛选栏（Q11-a）。
-      // channel（ADR-0064）有才透传进 PluginContext.channel，插件优先按它分派。
+      // channel 有才透传进 PluginContext.channel，插件优先按它分派。
       const patch: Partial<Selected> = {
         action: 'list',
         url: target.url ?? '',

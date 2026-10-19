@@ -38,7 +38,7 @@ export function pluginsDir(explicit?: string): string {
 
 /**
  * 进程内共享 cookie jar：登录 run 写入的 session cookie 跨 run 复用，
- * 后续读取 run 自动带上（见 ADR-0005）。按域隔离，多源同域才会串。
+ * 后续读取 run 自动带上。按域隔离，多源同域才会串。
  */
 const sharedCookieStore: CookieJar = new Map()
 
@@ -79,12 +79,12 @@ export interface Capabilities {
   reading: boolean
   search: boolean
   categories: boolean
-  /** 是否导出 getListings（预设目录页，ADR-0015） */
+  /** 是否导出 getListings（预设目录页） */
   listings: boolean
   explore: boolean
   /** 是否导出 getTags（标签索引页） */
   tags: boolean
-  /** 是否导出 fetchPlayUrl（播放页解析，ADR-0020） */
+  /** 是否导出 fetchPlayUrl（播放页解析） */
   play: boolean
   /** 是否声明了设置面（导出 getSettingsSchema） */
   settings: boolean
@@ -176,9 +176,9 @@ export interface RunRequest {
   options?: {
     page?: string
     category?: string
-    /** 页面通道（ADR-0025）：list 用任意列表页面 URL，透传进 PluginContext.url */
+    /** 页面通道：list 用任意列表页面 URL，透传进 PluginContext.url */
     url?: string
-    /** 列表通道标识（ADR-0064）：原样透传进 PluginContext.channel */
+    /** 列表通道标识：原样透传进 PluginContext.channel */
     channel?: string
     fixture?: string
     dir?: string
@@ -187,10 +187,10 @@ export interface RunRequest {
     sort?: string
     /** 用户偏好值（注入 $lib.settings，只读、不持久） */
     settings?: Record<string, string | boolean>
-    /** 宿主从登录表单收集、回传给 login 动作的输入值（声明式交互，ADR-0005） */
+    /** 宿主从登录表单收集、回传给 login 动作的输入值（声明式交互） */
     inputs?: Record<string, string>
     /**
-     * 浏览器通道形态（ADR-0046，run 级）：'persistent'（默认，落盘复用）|
+     * 浏览器通道形态（run 级）：'persistent'（默认，落盘复用）|
      * 'ephemeral'（本次 run 内每次 getHtml 都新起即焚）。缺省即 'persistent'。
      */
     browserMode?: BrowserMode
@@ -201,7 +201,7 @@ export interface RunResponse {
   ok: boolean
   data?: any
   error?: string
-  /** 结构化错误码（插件抛 CHALLENGE 时透传，供预览区切挑战态，ADR-0045） */
+  /** 结构化错误码（插件抛 CHALLENGE 时透传，供预览区切挑战态） */
   code?: string
   /** 结构化错误关联 URL（挑战页地址，供验证窗口/在浏览器打开用） */
   url?: string
@@ -268,10 +268,10 @@ export async function runPlugin(req: RunRequest, onUiRequest?: UiRequestHandler)
   const httpLog: HttpRecord[] = []
   try {
     const opts: RunOptions = { dir, onRequest: (r) => httpLog.push(trimRecord(r)), cookieStore: sharedCookieStore }
-    // headed 浏览器通道注入（ADR-0045 薄注入）：`--fixture` 优先（run.ts 内短路），
+    // headed 浏览器通道注入（薄注入）：`--fixture` 优先（run.ts 内短路），
     // 在线 run 才走到这里；插件侧零改（anime_site_a request() 直连优先 + 恰 1 次重抓直接吃到）。
     opts.onBrowserFetch = async (url, browserOpts) => {
-      // ADR-0046：run 级 browserMode 透传（插件零改）；ephemeral 不回填共享 jar
+      // run 级 browserMode 透传（插件零改）；ephemeral 不回填共享 jar
       const mode: BrowserMode = req.options?.browserMode === 'ephemeral' ? 'ephemeral' : 'persistent'
       const via = await fetchHtmlViaBrowser(url, { ...browserOpts, mode })
       if (mode !== 'ephemeral') refillSharedJar(url, via.cookies)
@@ -290,7 +290,7 @@ export async function runPlugin(req: RunRequest, onUiRequest?: UiRequestHandler)
     return { ok: true, data, durationMs: Date.now() - start, httpLog }
   } catch (err: any) {
     // 即便插件抛错，也返回插件在失败前已发起的请求，便于定位是网络还是解析问题；
-    // 结构化 code/url 透传（CHALLENGE → 预览区切挑战态，ADR-0045）。
+    // 结构化 code/url 透传（CHALLENGE → 预览区切挑战态）。
     return {
       ok: false,
       error: err.message,

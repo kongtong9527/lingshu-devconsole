@@ -5,7 +5,7 @@ import { loadPluginSettings } from './settings.js'
 
 /**
  * 从 RunResponse.data 中读取列表结果；非列表结果返回 null。
- * `filters`（ADR-0066 列表页自声明筛选组）一并读出：它是「只有抓到页面才知道」的
+ * `filters`（列表页自声明筛选组）一并读出：它是「只有抓到页面才知道」的
  * 落地页筛选（如工作室页的题材滑块），ListPreview 优先用它、缺省回退跳转携带的
  * `Selected.filters`。
  */
@@ -42,16 +42,16 @@ export interface Selected {
   action: Action
   target: string
   page: string
-  /** 筛选组合串（ADR-0014）：list/search 走 `PluginContext.category`，tags 走
+  /** 筛选组合串：list/search 走 `PluginContext.category`，tags 走
    *  `TagContext.category`（标签索引页自己的筛选，如 kvs_site_a `type=album`）——同口径同编码，
-   *  只是落到的 context 字段不同（ADR-0062 起 tags 不再有独立的服务端排序字段）。 */
+   *  只是落到的 context 字段不同（起 tags 不再有独立的服务端排序字段）。 */
   category: string
-  /** 页面通道（ADR-0025）：list 用任意列表页面 URL，透传进 PluginContext.url */
+  /** 页面通道：list 用任意列表页面 URL，透传进 PluginContext.url */
   url: string
-  /** 列表通道标识（ADR-0064）：`Listing.channel` / `PageJumpTarget.list.channel` 原样透传进
+  /** 列表通道标识：`Listing.channel` / `PageJumpTarget.list.channel` 原样透传进
    *  `PluginContext.channel`，插件优先按它分派（缺省回退 URL 正则）。 */
   channel?: string
-  /** 落地列表页专属筛选组（ADR-0021 型）：由 PageJumpTarget.list.filters 携带，
+  /** 落地列表页专属筛选组（型）：由 PageJumpTarget.list.filters 携带，
    *  宿主在 ListPreview 渲染筛选栏；用户组合后并入 category 再请求，不传服务端。 */
   filters?: CategoryGroup[]
   fixture: string
@@ -74,7 +74,7 @@ interface State {
   loading: boolean
   /** 列表累加条目（list/search 专用）：加载更多时追加，新运行时重置为单页 */
   listItems: ListItem[]
-  /** 列表页自声明筛选组（ADR-0066）：来自最近一次 list 结果的 `filters`，
+  /** 列表页自声明筛选组：来自最近一次 list 结果的 `filters`，
    *  非空时优先于 `Selected.filters`（跳转携带的静态筛选）渲染筛选栏。 */
   listFilters?: CategoryGroup[]
   /** 最近一页的分页元数据；缺失或 hasMore:false 时不显示「加载更多」 */
@@ -87,7 +87,7 @@ interface State {
   tagsLoadingMore: boolean
   theme: Theme
   /**
-   * 下一次 run 的浏览器通道形态（ADR-0046 Q9 联动语义）：
+   * 下一次 run 的浏览器通道形态（联动语义）：
    * 挑战块点「一次性窗口打开」即置 'ephemeral'，run() 消费；抓到非挑战内容后自动
    * 回 'persistent'，结果仍是 CHALLENGE 则保持武装（验证窗留着，直接重试）。
    * loadMore/loadMoreTags 不消费（恒走 persistent）。
@@ -179,7 +179,7 @@ export const useStore = create<State>((set, get) => ({
   run: async () => {
     const sel = get().selected
     if (!sel.pluginId) return
-    // ADR-0046：一次性模式一次消费（不记忆）；只在 ephemeral 时透传字段（persistent 零回退）
+    // 一次性模式一次消费（不记忆）；只在 ephemeral 时透传字段（persistent 零回退）
     const mode = get().browserMode
     set({ loading: true })
     const options: { page: string; category: string; url?: string; channel?: string; fixture?: string; settings?: Record<string, string | boolean>; browserMode?: BrowserMode } = {

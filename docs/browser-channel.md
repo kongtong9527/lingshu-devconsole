@@ -1,4 +1,4 @@
-# DevConsole 浏览器通道（browser-channel，ADR-0045）
+# DevConsole 浏览器通道（browser-channel）
 
 L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。插件侧只做显式
 `$lib.browser.getHtml`（直连优先 + 最多 1 次重抓，挑战由宿主抛 `CHALLENGE`
@@ -11,10 +11,10 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
   `Access-Control-Allow-Origin` 即被拦，读不到 body（iOS 能做是因为 WK 内
   先建同源上下文；扩展 content-script 无基建）。勿回退。
 - **新标签页手过沾不到 Node 重试的光（跨网络栈）**：clearance 绑 TLS 指纹
-  （ADR-0042 背景 2：全套 cookie + 同 UA + 齐头经 curl 重放仍 403）。iOS 能
+  （背景 2：全套 cookie + 同 UA + 齐头经 curl 重放仍 403）。iOS 能
   沾光是因为可见 Sheet 与隐藏链同 WK 网络栈；桌面系统标签页与 Node undici
   跨栈，沾不到。勿回退。
-- **常驻无头 sidecar 已知无解**：WAF 分辨自动/人手加载（ADR-0043 真机实证），
+- **常驻无头 sidecar 已知无解**：WAF 分辨自动/人手加载（真机实证），
   隐藏自动仍 403 且烧 profile 声誉。勿回退。
 
 ## 行为约定
@@ -25,7 +25,7 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
 - 被动触发：平时不起浏览器；`err.code==='CHALLENGE'` + url → 预览区切
   「需要验证后访问」+ 三按钮（打开验证窗口 / 在浏览器打开 / 重试）。
 - 同上下文同 UA：验证窗口与抓取同 persistentContext + 同 UA（桌面版
-  「同 store 同 UA」，对齐 ADR-0044 红线）；验证期间不做程序化导航
+  「同 store 同 UA」，对齐红线）；验证期间不做程序化导航
   （防连带封首页）。
 - `$lib.browser.getHtml` 语义（`plugin-service.ts` per-run 覆盖）：
   串行（同时一抓）+ 默认 30s 超时 + 通道实现原文 resolve
@@ -38,7 +38,7 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
   403/503 + `cf-mitigated` 头 + 前 4KB 小写强特征串，已剔除无区分度的
   `challenge-platform`）；`proxy.ts` `isChallengeResponse` 引用同一表（只标记不抛）。
 - runtime 保持纯 Node：L3 在 CLI 下永远 `--fixture` 离线验证，在线
-  `CHALLENGE` + exit 1 即正确行为（详见 ADR-0045 Q7）。
+  `CHALLENGE` + exit 1 即正确行为。
 
 ## 真站实测补记（2026-09，anime_site_a）
 
@@ -52,7 +52,7 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
   listings（5 条）；转正 checklist（referer / `+` 编码 / secure 时效）
   随新鲜数据同步验证通过。
 
-## 一次性抓取上下文（ADR-0046，与持久并列）
+## 一次性抓取上下文（持久并列）
 
 按窗口计数烧声誉的站点（anime_site_a「同一窗口第二次必 403」）用：类无痕上下文，用完即焚。
 
@@ -93,7 +93,7 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
 - 代价：开窗/新鲜抓取时各一次 launch（留窗期间复用同一进程）+ 抓取时窗口闪一下；
   仍走 `exclusive` 串行（同时只一抓）。
 
-## 自动验证（ADR-0047，半自动：机器跑腿，人只点窗内验证）
+## 自动验证（半自动：机器跑腿，人只点窗内验证）
 
 挑战块的「自动处理验证」开关（按插件记忆，缺省关）：CHALLENGE 到即按该插件
 通道偏好自动开窗（点的哪个窗记住哪个，缺省持久），每 2s 轮询
@@ -103,4 +103,4 @@ L3 全站挑战（anime_site_a）在 DevConsole 的在线抓取通道约定。�
 转手动；窗内那一下人机验证省不掉。去重状态在模块级（与挂载无关：同一结果对象
 一次、同一插件+URL 一轮、只处理当前结果；`run()` 卸载重挂、返回旧结果都不
 二次触发；亲手重开开关再武装一次）。持久验证窗同样只留最新一个（旧页即关，
-此前攒出一排标签页，ADR-0047 修订）。
+此前攒出一排标签页，修订）。

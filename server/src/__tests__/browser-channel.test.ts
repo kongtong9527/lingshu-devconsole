@@ -72,7 +72,7 @@ afterEach(async () => {
   vi.restoreAllMocks()
 })
 
-describe('browser-channel headed sidecar（ADR-0045）', () => {
+describe('browser-channel headed sidecar', () => {
   it('挑战页原文 resolve（403 + body 交插件判定），打 headed 标记 + 回传 cookie', async () => {
     const page = fakePage()
     const chromium = fakeChromium(page)
@@ -266,7 +266,7 @@ function freshEphemeralTrack(): EphemeralTrack {
   return { launchCalls: [], browsersClosed: 0, contexts: [] }
 }
 
-describe('browser-channel 一次性抓取上下文（ADR-0046，共享 browser + 验证复用）', () => {
+describe('browser-channel 一次性抓取上下文（共享 browser + 验证复用）', () => {
   it('ephemeral：打 headed-ephemeral 标记 + cookie 置空 + 上下文即焚 + 空闲连进程一起关', async () => {
     const track = freshEphemeralTrack()
     _internals.loadChromium = async () => ({ chromium: fakeEphemeralChromium(track) }) as never
@@ -489,7 +489,7 @@ describe('browser-channel 一次性抓取上下文（ADR-0046，共享 browser +
   })
 })
 
-describe('browser-channel 验证等待态（ADR-0047，纯本地读、零新请求）', () => {
+describe('browser-channel 验证等待态（纯本地读、零新请求）', () => {
   it('ephemeral 无验证窗：pending=false（轮询该停）', async () => {
     const track = freshEphemeralTrack()
     _internals.loadChromium = async () => ({ chromium: fakeEphemeralChromium(track) }) as never

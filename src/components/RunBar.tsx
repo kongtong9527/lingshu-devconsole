@@ -4,7 +4,7 @@ import { PlayIcon } from '../icons.js'
 
 interface ActionDef {
   // login / setting-action 不在动作选择器：login 经「账号」tab 表单提交，
-  // setting-action 经「设置」tab 按钮（均非 run 按钮，见 ADR-0005 声明式交互）
+  // setting-action 经「设置」tab 按钮（均非 run 按钮，见 声明式交互）
   key: Exclude<Action, 'setting-action' | 'login'>
   label: string
   needTarget: boolean

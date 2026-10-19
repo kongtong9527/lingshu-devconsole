@@ -182,7 +182,7 @@ function isHlsPlaylist(url: string, contentType: string | undefined, body: Buffe
 }
 
 /**
- * Cloudflare 拦截识别（ADR-0042 / ADR-0045 Q10 三端拉齐）。
+ * Cloudflare 拦截识别（/ 三端拉齐）。
  * 语义委托共享表（403/503 + `cf-mitigated` 头或前 4KB 特征串），本函数只做
  * Node Headers/Buffer 到共享探针的适配，保持原签名（存量测试与调用点零改）。
  * 命中时调用方必须跳过一切内容变换（HLS 重写/图片解密/缓存兜底），否则挑战 HTML 会被当成
@@ -226,7 +226,7 @@ function rewriteHlsPlaylist(body: string, baseUrl: string, referer?: string): st
 }
 
 /**
- * 检测并剥离图片 URL 的保留 query `__s=<num>`(ADR-0003)。
+ * 检测并剥离图片 URL 的保留 query `__s=<num>`。
  * `__s` 一律从回源 URL 去掉(否则上游 404);仅当值为 >1 的整数时返回 scrambleNum 触发解扰。
  * 非整数 / <=1 时直通(但仍剥参)。
  */
@@ -243,7 +243,7 @@ function extractScrambleParam(url: string): { url: string; scrambleNum?: number 
 }
 
 /**
- * 通用"横切倒序"图像变换(ADR-0003 / 逐字复刻 manga_site_b.js modifyImage):
+ * 通用"横切倒序"图像变换(/ 逐字复刻 manga_site_b.js modifyImage):
  * 把服务器已打乱的图还原。给定图高 H 与整数 num(num>1):
  *   blockSize = ⌊H/num⌋, r = H % num
  *   num 个块——第 i 块(i = 0..num-2)高 blockSize;末块(i = num-1)高 blockSize + r(吃余数)。
@@ -289,7 +289,7 @@ async function reverseStripes(body: Buffer, num: number): Promise<Buffer> {
 
 /** 调用上游：带伪装浏览器 UA + 目标站 Referer + 客户端提示头。网络故障时抛错（路由层转 502）。 */
 export async function fetchViaProxy(url: string, options: ProxyOptions = {}): Promise<ProxyResult> {
-  // 检测/剥离图片 URL 的保留 query __s(ADR-0003),否则上游 404。
+  // 检测/剥离图片 URL 的保留 query __s,否则上游 404。
   const { url: upstreamUrl, scrambleNum } = extractScrambleParam(url)
   const origin = new URL(upstreamUrl).origin
   const upstream = await fetch(upstreamUrl, {
@@ -363,7 +363,7 @@ export async function fetchViaProxy(url: string, options: ProxyOptions = {}): Pr
     headers['content-type'] = decoded.contentType
   }
 
-  // 解扰变换在 decrypt / base64 传输解码之后(ADR-0003),作用于最终解码出的图像字节。
+  // 解扰变换在 decrypt / base64 传输解码之后,作用于最终解码出的图像字节。
   if (hasScramble) {
     out = await reverseStripes(out, scrambleNum!)
     headers['content-type'] = detectImageType(out) || headers['content-type'] || 'application/octet-stream'

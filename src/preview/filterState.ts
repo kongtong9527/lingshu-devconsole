@@ -3,9 +3,9 @@ import type { CategoryGroup, CategoryFilterType, CategoryNode } from '../types.j
 /**
  * 筛选表单的本地会话状态（DevConsole 调试台，不持久化）。
  * 与 iOS FilterState（ios/Lingshu/Models/FilterState.swift）同构：
- * 按分组 key 保存选择，应用时组合成 ADR-0014 的 category 查询串。
- * listings 页签的 filters（ADR-0021）与 getCategories 共用同一套编码逻辑。
- * 筛选组联动（ADR-0063）求值器与 iOS 同算法：isGroupVisible / resolvedLinkedItems /
+ * 按分组 key 保存选择，应用时组合成category 查询串。
+ * listings 页签的 filters 与 getCategories 共用同一套编码逻辑。
+ * 筛选组联动求值器与 iOS 同算法：isGroupVisible / resolvedLinkedItems /
  * visibleGroups / applyLinkageClear（三端同输入同输出，单测同案锁定）。
  */
 export interface GroupState {
@@ -32,7 +32,7 @@ export function groupType(group: CategoryGroup): CategoryFilterType {
 }
 
 /**
- * 把 GroupState 组合成 ADR-0014 category 查询串（缺省组不输出）。
+ * 把 GroupState 组合成category 查询串（缺省组不输出）。
  * 与 iOS FilterState.categoryString 的编码逐条对齐：select `key=id`、
  * check `key=id1,id2,-id3`、text URL 编码、sort 可选 `,asc|desc` 后缀。
  * 同一 key 只输出一次（取最后出现的非空值，后者覆盖）——插件合法地让多组共享
@@ -52,7 +52,7 @@ export function categoryFromState(groups: CategoryGroup[], state: GroupState): s
   return order.map((k) => merged[k]).join('&')
 }
 
-// ── 筛选组联动求值器（ADR-0063，Q9/Q10/Q11/Q13）─────────────────────────────
+// ── 筛选组联动求值器（Q9/Q10/Q11/Q13）─────────────────────────────
 // 运行期容差（Q12）：未知父当恒显、环截断、缺边忽略，永不抛错；硬失败只在 CLI 校验。
 
 /** 非空父 key（trim 后空串视为无边） */
@@ -270,9 +270,9 @@ function partForGroup(g: CategoryGroup, state: GroupState): string {
 }
 
 /**
- * 合并 listing 自带 category 与筛选组合（ADR-0021）：
+ * 合并 listing 自带 category 与筛选组合：
  * listing.category 是目录页基础参数（如 "tid=1"），筛选组是用户后选的额外维度。
- * 两者同走 ADR-0014 编码；约定筛选组 key 不应与 listing.category 已有 key 重复，
+ * 两者同走编码；约定筛选组 key 不应与 listing.category 已有 key 重复，
  * 若重复以筛选值覆盖（拼接在后的同名键由 fetchList.parseCategory 后者覆盖前者）。
  */
 export function mergeListingCategory(base: string, filterCategory: string): string {

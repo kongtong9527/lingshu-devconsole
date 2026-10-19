@@ -32,7 +32,7 @@ interface Props {
 }
 
 /**
- * 单个筛选分组（widget）的渲染（ADR-0014）：
+ * 单个筛选分组（widget）的渲染：
  * select 单选 chips / check 勾选（canExclude 含排除）/ text 输入框 / sort 排序+可选升降序。
  * check + display:'tags' = 多选 tag 样式：芯片云三态循环（未选→包含→排除→未选），
  * 与复选框行同状态同编码（纯展示切换）。
@@ -40,7 +40,7 @@ interface Props {
  * 同一 key 的状态、编码一次输出（与站内单面板多分区的筛选 UI 同构，如 anime_site_a 内容标签）。
  * 无 sections 时退化为无标题单节（旧行为零改动）。
  * DevConsole 的 CategoriesPreview（getCategories）与 ListingsPreview（listing.filters，
- * ADR-0021）共用本组件，保证两种来源的筛选 UI 行为一致。
+ *）共用本组件，保证两种来源的筛选 UI 行为一致。
  */
 export function FilterGroupEditor({ group, state, onChange, groups }: Props) {
   const type = groupType(group)

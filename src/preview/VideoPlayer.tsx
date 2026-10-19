@@ -7,7 +7,7 @@ function isHlsUrl(url: string): boolean {
   return /\.m3u8(?:$|[?#])/i.test(url)
 }
 
-/** hls.js master playlist 解析出的清晰度档（ADR-0027 通路二） */
+/** hls.js master playlist 解析出的清晰度档（通路二） */
 interface HlsLevelOption {
   label: string
   /** hls.currentLevel 取值（-1 = 自动） */
@@ -15,7 +15,7 @@ interface HlsLevelOption {
 }
 
 /**
- * 视频播放器。ADR-0027 起支持视频清晰度，两条通路：
+ * 视频播放器。支持视频清晰度，两条通路：
  * 1. **显式 qualities**（props.qualities，多 URL 型站点）：插件声明各档独立 URL，
  *    点档位切换 activeSrc 重建播放器（换源）。
  * 2. **master playlist 自动（HLS ABR）**：hls.js 解析出多档 levels 时自动渲染

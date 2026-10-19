@@ -7,17 +7,17 @@ import { emptyGroupState, categoryFromState, mergeListingCategory, visibleGroups
 import { FilterGroupEditor } from './FilterGroupEditor.js'
 
 /**
- * listings 预览（ADR-0015 + ADR-0021 + ADR-0025 导航树 + listings-first 探索页条目）：
+ * listings 预览（导航树 + listings-first 探索页条目）：
  * - 顶层页签 = 一级导航；选中页签就地渲染其目录树。
  * - 导航树递归：带 children 的结点是分组/子菜单（可折叠，可任意深度），
  *   只有叶子结点是可点击目录页（打开 = runWith list）。
  * - 叶子打开：kind==='explore' 走 explore 动作（探索页 feed，url 为探索页标识透传
  *   getExplore context；缺省 = 默认探索页）；其余叶子带 url（页面通道）优先
- *   runWith({ action:'list', url })，缺省回退 category（ADR-0021 组合查询串）。
+ *   runWith({ action:'list', url })，缺省回退 category（组合查询串）。
  * - kind（series/search/explore 等）以角标展示，未知 kind 降级为普通项。
- * - filters（ADR-0021）是叶子目录页属性：叶子带 filters 时渲染筛选组，
+ * - filters 是叶子目录页属性：叶子带 filters 时渲染筛选组，
  *   用户组合后并入 category 再打开（url 叶子同样携带 filters 串）。筛选不持久化。
- *   explore 条目不消费 filters（feed 无目录页筛选语义）；**tags 条目消费**（ADR-0062：
+ *   explore 条目不消费 filters（feed 无目录页筛选语义）；**tags 条目消费**（
  *   合并串经 `TagContext.category` 传给 `getTags`，与 list 的 `context.category` 同口径）。
  */
 export default function ListingsPreview({ data }: { data: Listing[] }) {
@@ -33,7 +33,7 @@ export default function ListingsPreview({ data }: { data: Listing[] }) {
   const listing = data[active]
 
   /** 叶子「打开」：explore 条目走 explore 动作；tags 条目走 tags 动作（标签索引，
-   * 合并串经 `TagContext.category` 消费，ADR-0062）；其余 url 页面通道优先、缺省回退
+   * 合并串经 `TagContext.category` 消费）；其余 url 页面通道优先、缺省回退
    * category；入参为含自身 category + filters 的合并串 */
   const openListing = (node: Listing, mergedCategory: string) => {
     if (node.kind === 'explore') {
@@ -144,7 +144,7 @@ export default function ListingsPreview({ data }: { data: Listing[] }) {
               <div className="pv-empty-hint">
                 {node.kind === 'tags'
                   ? '标签索引：getTags() 标签云（首字分组全量或分页云 TagResult），未声明页级筛选'
-                  : '该目录页未声明筛选组（ADR-0021）'}
+                  : '该目录页未声明筛选组'}
               </div>
             )}
           </div>

@@ -26,7 +26,7 @@ DevConsole 的三条检查线，以及「契约类型来自 `runtime/dist`」这
 
 教训一句话：**新增必填字段只有 `tsc` 会告诉你，测试全绿不代表类型对**——改契约字段后跑 `typecheck`，别只看 `test`。
 
-## 插件目录怎么找（2026-10 去硬编码，ADR-0068）
+## 插件目录怎么找（2026-10 去硬编码）
 
 服务端**不再回退 monorepo 相对路径**（原 `../../../lingshu-plugins`），解析规则集中在 `server/src/plugin-service.ts` 的 `pluginsDir()`，按优先级取第一个**存在**的：
 

@@ -38,7 +38,7 @@ function fireManifestParsed(levels: Array<{ height: number; bitrate: number }>) 
   for (const cb of inst.listeners) cb('hlsManifestParsed', { levels })
 }
 
-describe('VideoPlayer 清晰度菜单（ADR-0029）', () => {
+describe('VideoPlayer 清晰度菜单', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     hlsListeners.length = 0

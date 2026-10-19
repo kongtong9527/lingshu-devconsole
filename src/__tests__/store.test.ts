@@ -155,7 +155,7 @@ describe('DevConsole 列表加载更多（分页器）', () => {
   })
 })
 
-describe('DevConsole 页面通道 url 透传（ADR-0025）', () => {
+describe('DevConsole 页面通道 url 透传', () => {
   beforeEach(() => {
     resetStore()
     vi.mocked(apiRun).mockReset()
@@ -200,7 +200,7 @@ describe('DevConsole 页面通道 url 透传（ADR-0025）', () => {
   })
 })
 
-describe('DevConsole 一次性浏览器通道（ADR-0046，武装到非挑战为止）', () => {
+describe('DevConsole 一次性浏览器通道（武装到非挑战为止）', () => {
   beforeEach(() => {
     resetStore()
     useStore.setState({ browserMode: 'persistent' })
@@ -243,7 +243,7 @@ describe('DevConsole 一次性浏览器通道（ADR-0046，武装到非挑战为
   })
 })
 
-describe('DevConsole 插件设置透传（ADR-0004）', () => {
+describe('DevConsole 插件设置透传', () => {
   beforeEach(() => {
     resetStore()
     vi.mocked(apiRun).mockReset()

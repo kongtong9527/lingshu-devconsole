@@ -1,5 +1,5 @@
 /**
- * 自动验证的按插件偏好（ADR-0047，宿主侧 localStorage，与 `$lib.settings` 严格分家）。
+ * 自动验证的按插件偏好（宿主侧 localStorage，与 `$lib.settings` 严格分家）。
  *
  * 存两样，不管插件运行时：
  * - 自动开关：用户在挑战块打开「自动处理验证」后，此插件 CHALLENGE 即自动

@@ -10,7 +10,7 @@ beforeEach(() => {
   localStorage.clear()
 })
 
-describe('verify-prefs（ADR-0047 按插件偏好）', () => {
+describe('verify-prefs（按插件偏好）', () => {
   it('自动开关缺省关，按插件隔离', () => {
     expect(loadAutoVerify('anime_site_a')).toBe(false)
     saveAutoVerify('anime_site_a', true)

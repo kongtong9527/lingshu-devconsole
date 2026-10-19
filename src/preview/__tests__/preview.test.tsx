@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 import type { ArticleDetail, ReadingPage, CategoryGroup, Listing, ContentBlock, PageJumpTarget, ExploreFeed, TagIndex, ListItem } from '../../types.js'
 import { caps } from '../../__tests__/fixtures.js'
 
-// 懒播放占位（ADR-0026）测试需要 mock apiRun；其余预览不直接调用它（store 由 runWith 接管）
+// 懒播放占位测试需要 mock apiRun；其余预览不直接调用它（store 由 runWith 接管）
 vi.mock('../../api/client.js', () => ({
   getPlugins: vi.fn(),
   run: vi.fn(),
@@ -203,7 +203,7 @@ describe('ReadingPagePreview', () => {
     }
   })
 
-  it('有 content 时按章节内容块渲染（ADR-0026），不走 pages 图像通道', () => {
+  it('有 content 时按章节内容块渲染，不走 pages 图像通道', () => {
     const data: ReadingPage = {
       title: '第 1 话',
       sourceName: 'x',
@@ -330,7 +330,7 @@ describe('ListPreview', () => {
     expect(called).toEqual({ action: 'reading', target: 'http://b' })
   })
 
-  it('条目带 target 时优先结构化跳转（递归列表 target.list.url，ADR-0025）', () => {
+  it('条目带 target 时优先结构化跳转（递归列表 target.list.url）', () => {
     useStore.setState({ selected: baseSelected })
     let called: Record<string, unknown> | null = null
     useStore.setState({ runWith: async (patch) => { called = patch } })
@@ -351,7 +351,7 @@ describe('ListPreview', () => {
     })
   })
 
-  it('列表结果自声明 filters（ADR-0066）渲染筛选组，应用后并入 category 重跑同一 url', () => {
+  it('列表结果自声明 filters 渲染筛选组，应用后并入 category 重跑同一 url', () => {
     let called: Record<string, unknown> | null = null
     useStore.setState({
       selected: { ...baseSelected, url: 'https://x/studio/room/redhot' },
@@ -377,7 +377,7 @@ describe('ListPreview', () => {
     })
   })
 
-  it('结果自声明 filters 优先于跳转携带的 filters；缺省时回退跳转携带的（ADR-0066）', () => {
+  it('结果自声明 filters 优先于跳转携带的 filters；缺省时回退跳转携带的', () => {
     const carried = [{ name: '发布年份', key: 'year', type: 'select' as const, items: [{ id: '2026', name: '2026' }] }]
     useStore.setState({
       selected: { ...baseSelected, url: 'https://x/list', filters: carried },
@@ -625,7 +625,7 @@ describe('BlockRenderer chapter 块', () => {
   })
 })
 
-describe('BlockRenderer video 懒播放占位（ADR-0026）', () => {
+describe('BlockRenderer video 懒播放占位', () => {
   beforeEach(() => {
     vi.mocked(apiRun).mockReset()
   })
@@ -705,7 +705,7 @@ describe('BlockRenderer video 懒播放占位（ADR-0026）', () => {
   })
 })
 
-describe('BlockRenderer episodes 块（ADR-0020）', () => {
+describe('BlockRenderer episodes 块', () => {
   it('渲染线路 tab 与剧集网格；未提供 pluginId 时点剧集不发起解析', () => {
     const block = {
       type: 'episodes',
@@ -1185,7 +1185,7 @@ describe('ListingsPreview', () => {
     expect(screen.getByText(/探索页：getExplore/)).toBeTruthy()
   })
 
-  it('listing 带 filters（ADR-0021）时渲染筛选组，选择后与 category 合并再打开', () => {
+  it('listing 带 filters 时渲染筛选组，选择后与 category 合并再打开', () => {
     let called: Record<string, unknown> | null = null
     useStore.setState({
       selected: baseSelected,
@@ -1216,7 +1216,7 @@ describe('ListingsPreview', () => {
     })
   })
 
-  it('kind=tags 条目（ADR-0062）同样渲染筛选组，选择后经 category 传给 getTags', () => {
+  it('kind=tags 条目同样渲染筛选组，选择后经 category 传给 getTags', () => {
     let called: Record<string, unknown> | null = null
     useStore.setState({
       selected: baseSelected,
@@ -1361,7 +1361,7 @@ describe('ListingsPreview', () => {
     })
   })
 
-  it('带 children 的目录页渲染导航树；点叶子用 url 页面通道打开（ADR-0025）', () => {
+  it('带 children 的目录页渲染导航树；点叶子用 url 页面通道打开', () => {
     let called: Record<string, unknown> | null = null
     useStore.setState({
       selected: baseSelected,
@@ -1438,7 +1438,7 @@ describe('toJumpPatch（PageJumpTarget → Selected patch）', () => {
       action: 'list', url: '', category: 'region=jp', target: '', page: '1',
     })
   })
-  it('list：带 url 页面通道（ADR-0025）', () => {
+  it('list：带 url 页面通道', () => {
     expect(toJumpPatch({ action: 'list', url: 'http://x/moviesets/chengrendongman' })).toEqual({
       action: 'list', url: 'http://x/moviesets/chengrendongman', category: '', target: '', page: '1',
     })
@@ -1448,7 +1448,7 @@ describe('toJumpPatch（PageJumpTarget → Selected patch）', () => {
       action: 'list', url: '', category: '', target: '', page: '1',
     })
   })
-  it('list：带 channel 原样透传（ADR-0064）', () => {
+  it('list：带 channel 原样透传', () => {
     expect(toJumpPatch({ action: 'list', url: 'http://x/categories/', channel: 'category-index' } as any)).toEqual({
       action: 'list', url: 'http://x/categories/', category: '', channel: 'category-index', target: '', page: '1',
     })
@@ -1583,7 +1583,7 @@ describe('ExplorePreview', () => {
 })
 
 describe('TagsPreview', () => {
-  it('kind=tags 条目（ADR-0037）打开 = runWith tags，不渲染筛选组', () => {
+  it('kind=tags 条目打开 = runWith tags，不渲染筛选组', () => {
     let called: Record<string, unknown> | null = null
     useStore.setState({
       selected: baseSelected,

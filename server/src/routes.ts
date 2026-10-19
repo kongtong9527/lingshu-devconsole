@@ -19,7 +19,7 @@ export function registerRoutes(app: FastifyInstance) {
     return runPlugin(body, sharedUiHandler)
   })
 
-  // 浏览器通道（ADR-0045）：headed sidecar 状态与验证窗口（被动触发）
+  // 浏览器通道：headed sidecar 状态与验证窗口（被动触发）
   app.get('/api/browser/status', async () => getBrowserStatus())
 
   app.post('/api/browser/open', async (req, reply) => {
@@ -28,7 +28,7 @@ export function registerRoutes(app: FastifyInstance) {
       reply.code(400)
       return { ok: false, error: '缺少 url' }
     }
-    // ADR-0046：mode 只认 'ephemeral'，其余（含缺省）一律 persistent（零回退）
+    // mode 只认 'ephemeral'，其余（含缺省）一律 persistent（零回退）
     const mode = body.mode === 'ephemeral' ? ('ephemeral' as const) : undefined
     try {
       return { ok: true, ...(await openVerifyWindow(body.url, undefined, mode)) }
@@ -38,7 +38,7 @@ export function registerRoutes(app: FastifyInstance) {
     }
   })
 
-  // 验证等待态（ADR-0047 自动验证轮询）：纯本地读、零新请求，前端每 2s 问一次
+  // 验证等待态（自动验证轮询）：纯本地读、零新请求，前端每 2s 问一次
   app.get('/api/browser/verify-state', async (req, reply) => {
     const q = (req.query ?? {}) as { url?: string; mode?: string }
     if (!q.url) {
@@ -50,7 +50,7 @@ export function registerRoutes(app: FastifyInstance) {
     return { ok: true, ...(await getVerifyState(q.url, mode)) }
   })
 
-  // $lib.ui SSE 流（ADR-0006）：前端 EventSource 连这里收插件中途发起的 prompt
+  // $lib.ui SSE 流：前端 EventSource 连这里收插件中途发起的 prompt
   app.get('/api/ui/stream', async (req, reply) => {
     reply.hijack()
     reply.raw.writeHead(200, {

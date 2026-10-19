@@ -1,4 +1,4 @@
-# 列表项卡片 DSL 预览（DevConsole 宿主侧，ADR-0050）
+# 列表项卡片 DSL 预览（DevConsole 宿主侧）
 
 `ListItem.card` 有即渲染 DSL、无即回退老行。渲染见 `src/preview/CardPreview.tsx`，接入见 `ListPreview.tsx`（`shouldFallbackCard` 分流）。
 

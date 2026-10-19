@@ -1,6 +1,6 @@
 # 视频播放宿主侧处理（video-playback）
 
-HLS 播放链路（`/api/proxy` 代理 + hls.js）、Cloudflare 挑战、清晰度切换（ADR-0029）的宿主侧约定。正文由 `devconsole/AGENTS.md` 对应节平移，文字零改动。
+HLS 播放链路（`/api/proxy` 代理 + hls.js）、Cloudflare 挑战、清晰度切换的宿主侧约定。正文由 `devconsole/AGENTS.md` 对应节平移，文字零改动。
 
 ## HLS 视频播放宿主侧处理
 
@@ -43,13 +43,13 @@ DevConsole 的播放链路是「服务端代理 `/api/proxy` 拉取清单与分�
  宿主如需播放需新增「挑战响应回退浏览器直连」通道（未来方向，当前不做）。
  完整排查见 `docs/hls-video-debug-log.md`「movie_site_a 案例」节。
 
-**挑战响应识别与标记（2026-09，ADR-0042；口径见 ADR-0052）**：`fetchViaProxy` 对缓冲响应做
+**挑战响应识别与标记（2026-09，口径）**：`fetchViaProxy` 对缓冲响应做
  `isChallengeResponse` 判定（403/503 + `cf-mitigated` 头或正文强特征串，引用 runtime
  共享表，只标记不抛）：命中则跳过
  HLS 重写/图片解密/缓存兜底（挑战 HTML 永不被当成媒体缓存），原样透传并打
  `x-lingshu-challenge: cloudflare` 标记头（路由层已透传）。全站挑战站（L3，如 anime_site_a）
  的插件 run 同样走 Node 通道，同样过不了——挑战由宿主 `$lib` 边界抛统一 `CHALLENGE`
- （ADR-0052），插件只留重抓 + 解析兜底。分级处置总纲见 ADR-0042。
+插件只留重抓 + 解析兜底。分级处置总纲。
 
 ### VideoPlayer 的 `canPlayType` 优先级
 
@@ -61,7 +61,7 @@ Chrome macOS 的 `canPlayType('application/vnd.apple.mpegurl')` 返回 `"maybe"`
 
 确认插件侧无误后，若仍播放失败，检查 hls.js 事件序列是否完整：`MANIFEST_PARSED` → `KEY_LOADED` → `FRAG_LOADED` → `canplay`。若 `video._hls` 为 falsy 却报 `MEDIA_ERR_SRC_NOT_SUPPORTED`，是宿主 VideoPlayer 优先级问题，按「工具自迭代优化」原则修复 DevConsole。
 
-## 视频清晰度切换（ADR-0029，双通路）
+## 视频清晰度切换（双通路）
 
 `VideoPlayer`（`src/preview/VideoPlayer.tsx`）支持清晰度菜单，两条通路互斥（显式优先）：
 
@@ -77,11 +77,11 @@ Chrome macOS 的 `canPlayType('application/vnd.apple.mpegurl')` 返回 `"maybe"`
   「≤2 档不显示」为早期笔误，勿回退）；Safari/iOS 原生 HLS 降级路径无菜单（原生播放器自理）。
 
 **透传链**：`BlockRenderer` video case（直嵌）传 `block.qualities`；`VideoLazyBlock` /
-`EpisodesBlock` 把 `PlayUrlResult.qualities` 传给 `VideoPlayer`。**iOS 端已落地（ADR-0029
+`EpisodesBlock` 把 `PlayUrlResult.qualities` 传给 `VideoPlayer`。**iOS 端已落地（
 2026-09 后置补完）**：Swift 契约同型（`VideoQuality{label;url;width?;height?}` +
 `qualities?` 双端），会话演进见 `ios/docs/player.md`「视频清晰度切换」——自动通路在 iOS 用
 `AVPlayerItem.variantPreferences`（「偏好」语义，系统仍按带宽自适应降档），与 hls.js
-`currentLevel` 的「锁定」语义有差异（记录于 ADR-0029）。
+`currentLevel` 的「锁定」语义有差异（记录于）。
 
 **插件侧职责**：多 URL 型站点声明 `qualities`；master playlist 型零声明。判定边界见
 `lingshu-skills/lingshu-plugin-dev/SKILL.md`「视频清晰度」节与 `data-model.md` 对应节。

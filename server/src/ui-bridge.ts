@@ -3,7 +3,7 @@ import type { ServerResponse } from 'node:http'
 import type { UiPrompt, UiResponse, UiRequestHandler } from 'lingshu-runtime'
 
 /**
- * $lib.ui 的 DevConsole 桥（ADR-0006）。
+ * $lib.ui 的 DevConsole 桥。
  *
  * 模型：run 仍是「POST /api/run → JSON RunResponse」（happy path 不变）。当插件在 run 中途
  * 调 `$lib.ui.*` 时，sharedUiHandler 把 prompt 经 SSE（GET /api/ui/stream）推给前端：

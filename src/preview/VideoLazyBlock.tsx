@@ -13,7 +13,7 @@ type PlayStatus =
   | { status: 'done'; result: PlayUrlResult }
 
 /**
- * 「无 url 播放占位 + 懒解析」视频块（ADR-0026）：
+ * 「无 url 播放占位 + 懒解析」视频块：
  * 插件在 video 块直接给最终流有困难（详情页内嵌播放器、地址经 detail_play
  * 接口动态给、时效 auth_key 需现算）时，可只声明 `target: { action:'play', url }`
  * 而不给 url。宿主渲染封面/占位 + «解析播放»，用户点播时才懒调 play 动作

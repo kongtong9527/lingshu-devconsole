@@ -51,7 +51,7 @@
 - 回归锁：`src/preview/__tests__/preview.test.tsx` 的 `BlockRenderer` describe 内
   「recommendations 块带 title / 无 title / 带 viewMore / 无 viewMore」四条。
 
-## listings 预览（ADR-0015 预设目录页 / ADR-0021 目录页筛选 / ADR-0030 探索页条目）
+## listings 预览（预设目录页 / 目录页筛选 / 探索页条目）
 
 插件导出 `getListings()` 时，RunBar 出现 `listings` 动作（`server/src/plugin-service.ts`
 探测 `capabilities.listings`），结果由 `src/preview/ListingsPreview.tsx` 渲染为
@@ -59,19 +59,19 @@
 `runWith({ action: 'list', category })` 就地复用 `ListPreview`（列表累加 +
 「加载更多」）。无 category 的页签以默认列表（空 category）打开。
 
-**ADR-0030（探索页条目，listings-first）**：`kind: 'explore'` 的叶子「打开」改走
+**（探索页条目，listings-first）**：`kind: 'explore'` 的叶子「打开」改走
 `runWith({ action: 'explore', url })`（url = 该条目的 url 字段 = 探索页标识，
 无 url = 默认探索页，`ExplorePreview` 渲染分区 feed）；叶子上展示「探索页：
 getExplore(context) 聚合 feed，不消费目录页筛选」提示，**不渲染筛选组**
 （`filters` 对 explore 条目无意义）。
 
-**ADR-0037（标签索引条目）+ ADR-0038（分页标签索引）+ ADR-0062（页级筛选）**：
+**（标签索引条目）+ （分页标签索引）+ （页级筛选）**：
 `kind: 'tags'` 的叶子「打开」改走 `runWith({ action: 'tags' })`（`TagsPreview` 双形态归一化：
 legacy 裸 `TagGroup[]` 首字分组全量云，或 `TagResult` `{groups, pagination}` 分页云；分页云走
 `tagsGroups/tagsPagination/loadMoreTags` 累加器 + 底部「加载更多标签」，与 `ListPreview` 的
 `listItems/loadMore` 同构；RunBar `tags` 动作可输 `page/category`）。
-**tags 叶子同样渲染筛选组并消费 `Listing.filters`**（ADR-0062）：选中项与 `Listing.category`
-合并成 ADR-0014 组合串，经 `TagContext.category` 传给 `getTags`（与 `fetchList` 的
+**tags 叶子同样渲染筛选组并消费 `Listing.filters`**：选中项与 `Listing.category`
+合并成组合串，经 `TagContext.category` 传给 `getTags`（与 `fetchList` 的
 `context.category` 同口径）——`Selected.category` 一字段两用途，BFF `plugin-service.ts`
 按动作透传，**没有独立的 `sort` 字段**（`TagContext.sort` 已退役：那曾是宿主为单站写死的排序档，
 对无此能力的站是假能力；服务端排序现在就是一个普通的 `key:'sort'` 筛选组，换档重跑首页）。
@@ -80,7 +80,7 @@ legacy 裸 `TagGroup[]` 首字分组全量云，或 `TagResult` `{groups, pagina
 缺省回退标签 url 作页面通道（`{action:'list',url}`，宿主优先 url）。
 本地过滤/拼音排序仍是零请求显示层（与 iOS `TagsCloudView` 同款语义），与页级筛选正交。
 
-**ADR-0021（目录页筛选）**：listing 可携带 `filters: CategoryGroup[]`（本目录页
+**（目录页筛选）**：listing 可携带 `filters: CategoryGroup[]`（本目录页
 专属筛选组，与 `getCategories` 同型同编码）。有 filters 时页签卡内渲染筛选控件
 （共享组件 `src/preview/FilterGroupEditor.tsx` + 纯逻辑 `filterState.ts`，与
 `CategoriesPreview` 复用同一套 state 组合编码），用户选择后经
@@ -101,31 +101,31 @@ legacy 裸 `TagGroup[]` 首字分组全量云，或 `TagResult` `{groups, pagina
 筛选表单（筛选只在搜索模式，见 iOS `DiscoverView` 对应实现）；目录页筛选是
 「目录页属性」，在页签内渲染。
 
-**筛选组联动（ADR-0063，kvs_site_a 分类页）**：子组经 `dependsOn`/`visibleWhen`/
+**筛选组联动（kvs_site_a 分类页）**：子组经 `dependsOn`/`visibleWhen`/
 `optionsWhen`/`clearPolicy` 随父值联动，求值器收敛在 `filterState.ts`
 （`isGroupVisible`/`resolvedLinkedItems`/`visibleGroups`/`applyLinkageClear`，
 与 iOS `FilterState` 同算法、同案单测）。三处预览（`ListingsPreview`/`ListPreview`/
 `CategoriesPreview`）只渲染可见组（`categoryFromState` 同步跳过隐藏组），`onChange`
 一律经 `applyLinkageClear` 清子；`FilterGroupEditor` 收 `groups` 全量、映射命中按单节
 扁平渲染。父按 key 寻址（联动 key 同数组内唯一）、父限 select/sort、`items` 为父空
-回落集——校验矩阵与运行期容差见 ADR-0063。
+回落集——校验矩阵与运行期容差。
 
-**ADR-0025（页面通道 / 导航树渲染，已实现）**：`Listing` 可带 `url`（页面通道）、
+**（页面通道 / 导航树渲染，已实现）**：`Listing` 可带 `url`（页面通道）、
 `kind`、`children`（可嵌套导航树）。`ListingsPreview` 已按导航树消费：
 - listing 带 `url`（非 category）：「打开」走 `runWith({ action:'list', url })`；
   缺 `url` 回退 category（filters 合并串随行，url 叶子同样携带）。
-- listing 带 `children`：递归渲染分组树（可折叠，任意深度），只有叶子是可点击目录页。**调试台刻意保留折叠树、不跟随 iOS 的「分级页签」（ADR-0067）**——预览要暴露插件声明的完整层级，跟着用户口径改反而会掩盖插件写错层级的问题。
+- listing 带 `children`：递归渲染分组树（可折叠，任意深度），只有叶子是可点击目录页。**调试台刻意保留折叠树、不跟随 iOS 的「分级页签」**——预览要暴露插件声明的完整层级，跟着用户口径改反而会掩盖插件写错层级的问题。
 - listing 带 `kind`（series/search 等）：树上结点渲染 kind 角标，未知 kind 降级为普通项。
 - `PageJumpTarget { action:'list', url }` 与 `ListItem.target`：`toJumpPatch`
   已支持 url 形态（url 优先、category 回退）；`ListPreview`/`ExplorePreview`
   条目点击优先结构化 target（递归列表，缺省回退详情/reading）。
 - url 全程透传：`Selected.url` → `apiRun` options.url → server `RunRequest.options.url`
   → runtime `PluginContext.url`；RunBar 的 list/search 提供 url 输入框。
-- channel 全程透传（ADR-0064）：`toJumpPatch` 有才带 `target.channel` → `Selected.channel`
+- channel 全程透传：`toJumpPatch` 有才带 `target.channel` → `Selected.channel`
   → options.channel → `PluginContext.channel`（无则不传，旧插件回退 URL 正则零改动）。
 
 **落地列表页筛选（2026-08，manga_site_a 案例）**：`PageJumpTarget.list` 可携带可选
-`filters: CategoryGroup[]`（ADR-0021 型）。`toJumpPatch` 透传 `target.filters` 到
+`filters: CategoryGroup[]`（型）。`toJumpPatch` 透传 `target.filters` 到
 `Selected.filters`；`ListPreview` 读到筛选组时渲染筛选栏（复用
 `FilterGroupEditor` + `filterState` 的 `categoryFromState`/`mergeListingCategory`，
 含「应用筛选/重置」按钮），组合后 `runWith({ action:'list', url, category: 合并串, filters })`
@@ -133,8 +133,8 @@ legacy 裸 `TagGroup[]` 首字分组全量云，或 `TagResult` `{groups, pagina
 合并 category）**。适用范围：页面通道跳转落地页自带的筛选（如 manga_site_a 每日更新落地页
 星期筛选），与 listing 目录页筛选同型同编码；别把落地页筛选塞进 getExplore 分区内联。
 
-**列表页自声明筛选（ADR-0066，2026-10 video_site_c 案例）**：筛选组还有第二个来源——
-**list 结果自带** `ListResult.filters`（ADR-0066），用于「只有抓到页面才知道」的选项
+**列表页自声明筛选（2026-10 video_site_c 案例）**：筛选组还有第二个来源——
+**list 结果自带** `ListResult.filters`，用于「只有抓到页面才知道」的选项
 （video_site_c 工作室页题材滑块按工作室不同、只渲进 SSR HTML，卡片上根本没有）。
 `readListResult` 顺带读出 `filters` → `store.listFilters`（`run`/`goBack` 更新、
 `loadMore` 保留、`setPlugin`/`setAction` 清空），`ListPreview` 两个来源的**优先级**：
@@ -145,10 +145,10 @@ resultFilters（结果自声明，非空时） > selected.filters（跳转携带
 
 即「页面实际长什么样」优先于「跳转时以为的样子」；两者都空 = 无筛选栏（零回归）。
 应用筛选的出口不变（`mergeListingCategory` 合并 → 同 `url` 重跑 → `filters` 随 patch 带回），
-**不是**第三个控件体系——渲染、编码、联动（ADR-0063）全部走既有那一套。
+**不是**第三个控件体系——渲染、编码、联动全部走既有那一套。
 渲染时机上，筛选组随第一页结果**后到**，故筛选栏会在加载完成后出现（不是缺陷）。
 
-**ADR-0026（video 播放占位 / ReadingPage content，已实现）**：
+**（video 播放占位 / ReadingPage content，已实现）**：
 - `video` 块「无 `url` + `target.play`」：`BlockRenderer` 的 video case 渲染
   「封面/占位 + «解析播放»」（`VideoLazyBlock`，含加载态、错误+重试），点击懒调
   `play` 动作就地出流（与 episodes 块的懒解析模式一致）。
@@ -160,7 +160,7 @@ resultFilters（结果自声明，非空时） > selected.filters（跳转携带
 - `ReadingPagePreview` 优先按 `content` 渲染图文块（`BlockRenderer` 逐块渲染），
   无 content 回退 pages 逐张成图（漫画兼容）。
 
-## episodes 块预览与 play 动作（ADR-0020 播放页解析）
+## episodes 块预览与 play 动作（播放页解析）
 
 详情 `episodes` 块（线路 × 剧集）由 `src/preview/EpisodesBlock.tsx` 渲染：
 

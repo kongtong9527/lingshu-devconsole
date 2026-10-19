@@ -323,7 +323,7 @@ export default function BlockRenderer({
       )
       break
     case 'video':
-      // ADR-0026：url 可选。有 target.play 时**优先懒解析**——即使同时给了 url，
+      // url 可选。有 target.play 时**优先懒解析**——即使同时给了 url，
       // 该 url 也可能是出流入口/页面地址而非媒体直链（如 B 站视频页），直接硬播会
       // MEDIA_ERR_SRC_NOT_SUPPORTED；点播时经 fetchPlayUrl 现算出流才保鲜、可播。
       // 仅无 target.play 时才直接用 url 内联播放（直嵌流形态，video_site_a 短剧/manga_site_a 等）。

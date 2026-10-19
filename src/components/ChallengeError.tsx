@@ -9,7 +9,7 @@ import { AlertIcon } from '../icons.js'
 /** 从文案中回退提取首个 https URL（对齐 iOS jsChallengeError：url 缺失时的人话兜底） */
 function extractUrl(result: RunResponse): string | undefined {
   if (result.url) return result.url
-  const m = (result.error ?? '').match(/https?:\/\/[^\s)，）]+/)
+  const m = (result.error ?? '').match(/https?:\/\/[^\s)）]+/)
   return m ? m[0] : undefined
 }
 
@@ -21,7 +21,7 @@ export function isChallengeResult(result: RunResponse): boolean {
 }
 
 /**
- * 挑战态错误块（ADR-0045 Q11，对齐 iOS ErrorStateView 挑战态；ADR-0046 加一次性）。
+ * 挑战态错误块（对齐 iOS ErrorStateView 挑战态；加一次性）。
  * 被动触发 + 手动确认：三个按钮均由用户显式点击，不自动弹验证窗口、
  * 不自动检测通过（防误伤与烧 session 声誉）；取消/失败语义不变。
  * 一次性联动（Q9）：点「一次性窗口打开」= 本轮验证窗 ephemeral + 下一次重试抓取
@@ -38,7 +38,7 @@ export default function ChallengeError({ result }: { result: RunResponse }) {
   const [opened, setOpened] = useState(false)
   const [openedEphemeral, setOpenedEphemeral] = useState(false)
   const [openError, setOpenError] = useState<string | undefined>()
-  // 自动验证开关（ADR-0047）：按插件记忆，缺省关
+  // 自动验证开关：按插件记忆，缺省关
   const [autoOn, setAutoOn] = useState(() => (pluginId ? loadAutoVerify(pluginId) : false))
   useEffect(() => {
     setAutoOn(pluginId ? loadAutoVerify(pluginId) : false)

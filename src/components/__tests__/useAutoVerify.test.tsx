@@ -1,5 +1,5 @@
 /**
- * useAutoVerify 单测（ADR-0047 修订：去重与挂载无关）。
+ * useAutoVerify 单测（修订：去重与挂载无关）。
  * client 全 mock + 短轮询注入，不碰真浏览器；store 用真的。
  * 模块级去重（handled 对象集 + episode 计数）跨用例常驻——各用例用不同 URL 隔离。
  */
@@ -69,7 +69,7 @@ function hookProps(url: string, over: Record<string, unknown> = {}) {
   }
 }
 
-describe('useAutoVerify（ADR-0047 自动验证引擎）', () => {
+describe('useAutoVerify（自动验证引擎）', () => {
   it('开关关时不自动开窗', async () => {
     const url = freshUrl()
     const props = hookProps(url, { enabled: false })

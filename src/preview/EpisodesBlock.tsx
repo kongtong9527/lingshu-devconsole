@@ -11,7 +11,7 @@ type PlayStatus =
   | { status: 'done'; result: PlayUrlResult }
 
 /**
- * 「线路 × 剧集」块（ADR-0020）：
+ * 「线路 × 剧集」块：
  * 渲染线路 tab + 剧集网格；点选剧集时懒调 `play` 动作（fetchPlayUrl），
  * 就地渲染播放器（不切换预览、不改全局 selected）。解析结果按播放页 URL
  * 缓存在组件内（详情预览存活期 = 会话级缓存，重新 run detail 即清空）。

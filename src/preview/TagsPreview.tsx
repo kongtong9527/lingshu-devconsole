@@ -3,7 +3,7 @@ import type { TagGroup, TagIndex, TagResult } from '../types.js'
 import { toJumpPatch } from './jump.js'
 
 /**
- * 标签索引预览（ADR-0037 `getTags()` + 分页标签索引）：
+ * 标签索引预览（`getTags()` + 分页标签索引）：
  * - 内容 = legacy `TagGroup[]`（首字分组全量云）或 `TagResult`（分页排序云：本页 groups + pagination）。
  * - 分页云走 store 累加器（`tagsGroups` + `loadMoreTags`，与 ListPreview 的 listItems/loadMore 同构）；
  *   legacy 全量（无 pagination）不显示加载更多。

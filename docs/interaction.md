@@ -1,8 +1,8 @@
 # 声明式交互与直问桥（interaction）
 
-账号面板（ADR-0005）与 `$lib.ui` 直问用户桥（ADR-0006）的宿主侧约定。正文由 `devconsole/AGENTS.md` 对应节平移，文字零改动。
+账号面板与 `$lib.ui` 直问用户桥的宿主侧约定。正文由 `devconsole/AGENTS.md` 对应节平移，文字零改动。
 
-## 账号面板（声明式交互，ADR-0005）
+## 账号面板（声明式交互）
 
 插件声明 `getAccountSchema()` 时，`PluginInfo.accountSchema` + `capabilities.account` 为真，结果面板出现「账号」tab（`ResultPanel.tsx`，与「设置」tab 同构）。
 
@@ -11,7 +11,7 @@
 - **login 不进 RunBar 动作选择器**（`RunBar.ALL_ACTIONS` 排除 `'login'`）——它经「账号」tab 表单提交，同 `setting-action` 经「设置」tab 按钮，均非 run 按钮。
 - **共享 cookie jar**：server 侧 `plugin-service.ts` 持模块级 `sharedCookieStore`，每次 run 注入。登录写入的 session cookie 自动续到后续读取 run（见 `runtime/AGENTS.md`「cookie jar 跨 run 共享」）。
 
-## `$lib.ui` 直问用户桥（ADR-0006）
+## `$lib.ui` 直问用户桥
 
 插件在 run 中途经 `await $lib.ui.*` 直问用户（验证码/确认/toast/开链接）时，DevConsole 的承载模型：**run 仍是「POST /api/run → JSON RunResponse」（happy path 不变）**，`$lib.ui` 触发时另开一条实时通道回推 prompt。
 
