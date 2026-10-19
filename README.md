@@ -185,4 +185,4 @@ Each repository is an independent snapshot with its own license; none of them co
 
 ---
 
-Snapshot: `2026-10-20` · version `0.1.16`
+Snapshot: `2026-10-20` · version `0.1.18`

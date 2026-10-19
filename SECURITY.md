@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-This repository is published as periodic snapshots. Only the **current snapshot** (`0.1.16`, dated
+This repository is published as periodic snapshots. Only the **current snapshot** (`0.1.18`, dated
 `2026-10-20`) is supported; earlier snapshots are not patched. Please reproduce a report against a fresh
 checkout of the current snapshot before sending it.
 

@@ -1,7 +1,6 @@
 {
   "name": "lingshu-devconsole",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n server,vite -c blue,green \"npm:dev:server\" \"npm:dev:vite\"",
@@ -16,7 +15,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "lingshu-runtime": "git+https://github.com/kongtong9527/lingshu-runtime.git#v0.1.16",
+    "lingshu-runtime": "^1.0.5",
     "fastify": "^4.27.0",
     "hls.js": "^1.6.16",
     "playwright-core": "^1.63.0",
@@ -47,5 +46,9 @@
   "homepage": "https://github.com/kongtong9527/lingshu-devconsole#readme",
   "bugs": {
     "url": "https://github.com/kongtong9527/lingshu-devconsole/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
