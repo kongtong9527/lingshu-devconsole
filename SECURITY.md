@@ -2,8 +2,8 @@
 
 ## Supported versions
 
-This repository is published as periodic snapshots. Only the **current snapshot** (`0.1.8`, dated
-`2026-10-17`) is supported; earlier snapshots are not patched. Please reproduce a report against a fresh
+This repository is published as periodic snapshots. Only the **current snapshot** (`0.1.13`, dated
+`2026-10-19`) is supported; earlier snapshots are not patched. Please reproduce a report against a fresh
 checkout of the current snapshot before sending it.
 
 ## Threat model: the sandbox is not a security boundary
